@@ -4,13 +4,13 @@ use ieee.numeric_std.all;
 
 entity LShifter1 is
 port (
-    ip : in std_logic_vector (15 downto 0);
-    op : out std_logic_vector (15 downto 0)
+    inp : in std_logic_vector (15 downto 0);
+    outp : out std_logic_vector (15 downto 0)
   );
 end entity LShifter1;
 
 architecture Behav of LShifter1 is
 begin
-  op(15 downto 1) <= ip(14 downto 0);
-  op(0) <= '0';
+  outp(15 downto 1) <= inp(14 downto 0);
+  outp(0) <= '0';
 end Behav;

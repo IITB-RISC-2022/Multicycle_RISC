@@ -2,15 +2,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity LShifter7 is
+entity SignExt9 is
 port (
     inp : in std_logic_vector (8 downto 0);
     outp : out std_logic_vector (15 downto 0)
   );
-end entity LShifter7;
+end entity SignExt9;
 
-architecture Behav of LShifter7 is
+architecture Struc of SignExt9 is
 begin
-  outp(15 downto 7) <= inp;
-  outp(6 downto 0) <= (others=>'0');
-end Behav;
+  outp(8 downto 0) <= inp;
+  outp(15 downto 9) <= (others =>inp(8));
+end SignedExtender;
