@@ -29,7 +29,7 @@ use ieee.numeric_std.all;
 
 entity REG_FILE is
 		port(CLK, RST : in std_logic;
-			  WR_EN, r7_sel, r7_en : in std_logic;
+			  WR_EN, r7_en : in std_logic;
 			  RF_A1 : in std_logic_vector(2 downto 0);
 			  RF_A2 : in std_logic_vector(2 downto 0);
 			  RF_A3 : in std_logic_vector(2 downto 0);
@@ -67,7 +67,7 @@ begin
 	dec: reg_file_decoder port map(add => RF_A3, m => WR_EN, en => write_en);
 	
 	reg_file_in(0 to 6) <= (others =>RF_D3);
-	with r7_sel select reg_file_in(7) <= 
+	with r7_en select reg_file_in(7) <= 
 			RF_D3 when '0',
 			R7_IN when '1',
 			(others => '0') when others;

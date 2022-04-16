@@ -54,7 +54,7 @@ architecture Complicated of DATAPATH is
 	
 	component REG_FILE is
 		port(CLK, RST : in std_logic;
-			  WR_EN, r7_sel : in std_logic;
+			  WR_EN, r7_en : in std_logic;
 			  RF_A1 : in std_logic_vector(2 downto 0);
 			  RF_A2 : in std_logic_vector(2 downto 0);
 			  RF_A3 : in std_logic_vector(2 downto 0);
