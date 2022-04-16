@@ -6,12 +6,12 @@ entity DATA_PATH is
 	port(
 	CLK, RST :in std_logic;
 	ALU_OP : in std_logic_vector(2 downto 0);
-	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN : in std_logic_vector;
+	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN : in std_logic;
 	R7_sel, REG_WR_EN, mem_wr_en : in std_logic;
 	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
-	ta_mux, tb_mux: in std_logic_vector(1 downto 0);
-	tc_mux, r7_mux: in std_logic;
-	mem_addr_mux, mem_di_mu: in std_logic_vector(1 downto 0);
+	ta_mux, tb_mux, r7_mux: in std_logic_vector(1 downto 0);
+	tc_mux: in std_logic;
+	mem_addr_mux, mem_di_mux: in std_logic;
 	alu_y_a_mux: in std_logic_vector(2 downto 0);
 	alu_y_b_mux: in std_logic_vector(1 downto 0);
 	PC_mux: in std_logic_vector(2 downto 0)
@@ -109,14 +109,15 @@ architecture Complicated of DATA_PATH is
 	signal one_16_bit: std_logic_vector(15 downto 0) := "0000000000000001";
 	signal alu_y_a, alu_y_b, alu_y_out: std_logic_vector(15 downto 0);
 	signal alu_x_c, alu_x_z: std_logic;
+	signal C_in, Z_in, C_flag, Z_flag: std_logic;
 	signal alu_x_out: std_logic_vector(15 downto 0);
 	
 	signal mem_addr_in, mem_data_in, mem_data_out : std_logic_vector(15 downto 0);
 	signal rf_d3_in, rf_d1_out, rf_d2_out: std_logic_vector(15 downto 0);
 	signal rf_a1_in, rf_a3_in: std_logic_vector(2 downto 0);
 	
-	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TC_out, PC_in, PC_out, R7_in: std_logic_vector(15 downto 0);
-	signal se6_out, se9_out, LS7outp, LS1_outp : std_logic_vector(15 downto 0);
+	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TC_out, PC_in, PC_out, PE_out, R7_in: std_logic_vector(15 downto 0);
+	signal se6_outp, se9_outp, LS7_outp, LS1_outp : std_logic_vector(15 downto 0);
 	signal TD_in, TD_out: std_logic_vector(2 downto 0);
 begin
 	
@@ -162,7 +163,7 @@ begin
 	CLK, 
 	ALU_OP,
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN,
-	R7_sel, WR_EN,
+	R7_sel, REG_WR_EN, mem_wr_en,
 	rf_a1_mux, rf_a3_mux, rf_d3_mux, 
 	ta_mux, tb_mux, tc_mux,
 	r7_mux, mem_addr_mux, mem_di_mux,
@@ -236,10 +237,12 @@ begin
 		end case;	
 		
 		case(R7_mux) is 
-			when '0' =>
+			when "00" =>
 				R7_in <= alu_y_out; --
-			when '1' =>
+			when "01" =>
 				R7_in <= PC_out;  --
+			when "10" =>
+				R7_in <= TB_out; --
 		end case;	
 		
 		case(mem_addr_mux) is 
@@ -247,6 +250,7 @@ begin
 				mem_addr_in <= TA_out; --
 			when '1' =>
 				mem_addr_in <= PC_out; --
+		end case;
 				
 		case(mem_di_mux) is 
 			when '0' =>

@@ -10,16 +10,16 @@ entity MEMORY is
 end MEMORY;
 
 architecture behav of MEMORY is
-	type data is array(0 to 2**16 - 1) of std_logic_vector(15 downto 0);
-	signal RAM: data;
+	type vec_array is array(0 to 2**16 - 1) of std_logic_vector(15 downto 0);
+	signal RAM: vec_array;
 begin
 	process(CLK, ADDR, DATA)
 	begin
 	if CLK'event and (CLK = '0') then
-		if WR_Enable then
-			RAM(unsigned(ADDR)) <= DATA;
+		if WR_Enable = '1' then
+			RAM(to_integer(unsigned(ADDR))) <= DATA;
 		end if;
-			OUTP <= RAM(unsigned(ADDR));
+			OUTP <= RAM(to_integer(unsigned(ADDR)));
 	end if;
 	end process;
 end architecture;
