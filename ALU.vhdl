@@ -23,7 +23,11 @@ begin
 		
 		if (alu_op = "00") then
 			temp_out := std_logic_vector(unsigned(inp_a) + unsigned(inp_b))(15 downto 0);
-			out_c <= std_logic(std_logic_vector(unsigned(inp_a) + unsigned(inp_b))(16));
+			if (unsigned(inp_a) + unsigned(inp_b)) > 2**16-1 then
+				out_c <= '1';
+			else
+				out_c <= '0';
+			end if;
 		elsif (alu_op = "01") then
 			temp_out := inp_a xor inp_b;
 			out_c <= '0';

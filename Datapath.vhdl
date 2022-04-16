@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity DATA_PATH is
+entity DATAPATH is
 	port(
 	CLK, RST :in std_logic;
-	ALU_OP : in std_logic_vector(2 downto 0);
+	ALU_OP : in std_logic_vector(1 downto 0);
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TZ_EN, TD_EN : in std_logic;
 	R7_sel, REG_WR_EN, mem_wr_en : in std_logic;
 	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
@@ -14,8 +14,8 @@ entity DATA_PATH is
 	mem_addr_mux: in std_logic_vector(1 downto 0);
 	mem_di_mux: in std_logic;
 	alu_x_a_mux: in std_logic;
-	alu_y_a_mux: in std_logic_vector(2 downto 0);
-	alu_y_b_mux: in std_logic_vector(1 downto 0);
+	alu_y_a_mux: in std_logic_vector(1 downto 0);
+	alu_y_b_mux: in std_logic_vector(2 downto 0);
 	PC_mux: in std_logic_vector(2 downto 0);
 	TB_outp: out std_logic_vector(15 downto 0);
 	TD_outp: out std_logic_vector(2 downto 0);
@@ -24,10 +24,10 @@ entity DATA_PATH is
 	TZ_flag: out std_logic;
 	Z_flag: out std_logic
 	);
-end entity DATA_PATH;
+end entity DATAPATH;
 
 
-architecture Complicated of DATA_PATH is
+architecture Complicated of DATAPATH is
 	component FF16 is
 		port(D: in std_logic_vector(15 downto 0);
 			  EN: in std_logic;
@@ -253,6 +253,8 @@ begin
 				R7_in <= PC_out;  --
 			when "10" =>
 				R7_in <= TB_out; --
+			when others =>
+				R7_in <= (others => '0');
 		end case;	
 		
 		case(mem_addr_mux) is 
