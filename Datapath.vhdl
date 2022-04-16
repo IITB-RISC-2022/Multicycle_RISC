@@ -7,7 +7,7 @@ entity DATA_PATH is
 	CLK, RST :in std_logic;
 	ALU_OP : in std_logic_vector(2 downto 0);
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN : in std_logic_vector;
-	R7_sel, WR_EN : in std_logic;
+	R7_sel, REG_WR_EN, mem_wr_en : in std_logic;
 	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
 	ta_mux, tb_mux: in std_logic_vector(1 downto 0);
 	tc_mux, r7_mux: in std_logic;
@@ -57,7 +57,7 @@ architecture Complicated of DATA_PATH is
 	end component;
 	
 	component MEMORY is
-		port(CLK: in std_logic;
+		port(CLK, WR_Enable: in std_logic;
 			  ADDR: in std_logic_vector(15 downto 0);
 			  DATA: in std_logic_vector(15 downto 0);
 			  OUTP: out std_logic_vector(15 downto 0));
@@ -124,23 +124,25 @@ begin
 	flag_C: FF1 port map(D => C_in, EN=>C_EN, RST=>RST, CLK=>CLK, Q=>C_flag);
 	flag_Z: FF1 port map(D => Z_in, EN=>C_EN, RST=>RST, CLK=>CLK, Q=>Z_flag);
 	
-	ALU_X : ALU port map(alu_op =>"01", inp_a =>PC_out, inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
+	ALU_X : ALU port map(alu_op =>"01", inp_a =>PC_out, --
+								inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
 	
-	RAM : MEMORY port map(CLK => CLK, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
+	RAM : MEMORY port map(CLK => CLK, WR_Enable => mem_wr_en, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
 	
 	REGISTER_FILE : REG_FILE port map(CLK => CLK, 
 												 RST => RST, 
-												 WR_EN => wr_en, 
+												 WR_EN => reg_wr_en, 
 												 r7_sel => r7_sel, 
 												 RF_A1 => rf_a1_in, 
-												 RF_A2 => IR_out(8 downto 6), 
+												 RF_A2 => IR_out(8 downto 6), --
 												 RF_A3 => rf_a3_in, 
 												 RF_D3 => rf_d3_in, 
 												 R7_IN => R7_IN,
 												 RF_D1 =>rf_d1_out, 
 												 RF_D2=> rf_d2_out);
 	
-	IR : FF16 port map(D => mem_data_out,EN=> IR_EN, RST=> RST, CLK=>CLK, Q=>IR_out );
+	IR : FF16 port map(D => mem_data_out, --
+							 EN=> IR_EN, RST=> RST, CLK=>CLK, Q=>IR_out );
 	TB : FF16 port map(D => TB_in,EN=> TB_EN, RST=> RST, CLK=>CLK, Q=>TB_out );
 	TA : FF16 port map(D => TA_in,EN=> TA_EN, RST=> RST, CLK=>CLK, Q=>TA_out );
 	TC : FF16 port map(D => TC_in,EN=> TC_EN, RST=> RST, CLK=>CLK, Q=>TC_out );
@@ -172,9 +174,9 @@ begin
 	begin
 		case(rf_a1_mux) is 
 			when "00" =>
-				rf_a1_in <= IR_out(11 downto 9);
+				rf_a1_in <= IR_out(11 downto 9); --
 			when "01" =>
-				rf_a1_in <= TD_out;
+				rf_a1_in <= TD_out; --
 			when "10" =>
 				rf_a1_in <= "111";
 			when others =>
@@ -184,86 +186,86 @@ begin
 				
 		case(rf_a3_mux) is 
 			when "00" =>
-				rf_a3_in <= IR_out(8 downto 6);
+				rf_a3_in <= IR_out(8 downto 6); --
 			when "01" =>
-				rf_a3_in <= TD_out;
+				rf_a3_in <= TD_out; --
 			when "10" =>
-				rf_a3_in <= IR_out(11 downto 9);
+				rf_a3_in <= IR_out(11 downto 9); --
 			when others =>
-				rf_a3_in <= IR_out(5 downto 3);
+				rf_a3_in <= IR_out(5 downto 3); --
 		end case;
 		
 		case(rf_d3_mux) is 
 			when "00" =>
-				rf_d3_in <= LS7_outp;
+				rf_d3_in <= LS7_outp; --
 			when "01" =>
-				rf_d3_in <= TA_out;
+				rf_d3_in <= TA_out; --
 			when "10" =>
-				rf_d3_in <= TC_out;
+				rf_d3_in <= TC_out; --
 			when others =>
 				rf_d3_in <= (others => '0');
 		end case;
 
 		case(tb_mux) is 
 			when "00" =>
-				TB_in <= PE_out;
+				TB_in <= PE_out; --
 			when "01" =>
-				TB_in <= se9_outp;
+				TB_in <= se9_outp; --
 			when "10" =>
-				TB_in <= rf_d2_out;
+				TB_in <= rf_d2_out; --
 			when others =>
 				TB_in <= (others => '0');
 		end case;		
 			
 		case(ta_mux) is 
 			when "00" =>
-				TA_in <= mem_data_out;
+				TA_in <= mem_data_out; --
 			when "01" =>
-				TA_in <= alu_y_out;
+				TA_in <= alu_y_out; --
 			when "10" =>
-				TA_in <= rf_d1_out;
+				TA_in <= rf_d1_out; --
 			when others =>
-				TA_in <= (others => '0');
+				TA_in <= (others=>'0');
 		end case;	
 		
 		case(tc_mux) is 
 			when '0' =>
-				TC_in <= mem_data_out;
+				TC_in <= mem_data_out; --
 			when '1' =>
-				TC_in <= rf_d1_out;
+				TC_in <= rf_d1_out; --
 		end case;	
 		
 		case(R7_mux) is 
 			when '0' =>
-				R7_in <= alu_y_out;
+				R7_in <= alu_y_out; --
 			when '1' =>
-				R7_in <= PC_out;
+				R7_in <= PC_out;  --
 		end case;	
 		
 		case(mem_addr_mux) is 
 			when '0' =>
-				mem_addr_in <= TA_out;
+				mem_addr_in <= TA_out; --
 			when '1' =>
-				mem_addr_in <= PC_out;
+				mem_addr_in <= PC_out; --
 				
 		case(mem_di_mux) is 
 			when '0' =>
-				mem_data_in <= TA_out;
+				mem_data_in <= TA_out; -- 
 			when '1' =>
-				mem_data_in <= TC_out;
+				mem_data_in <= TC_out; --
 		end case;	
 		
-		case(alu_y_a_mux) is
+		case(alu_y_b_mux) is
 			when "000" =>
-				alu_y_b <= LS1_outp;
+				alu_y_b <= LS1_outp; --
 			when "001" =>
-				alu_y_b <= se6_outp;
+				alu_y_b <= se6_outp; --
 			when "010" =>
-				alu_y_b <= se9_outp;
+				alu_y_b <= se9_outp; --
 			when "011" =>
-				alu_y_b <= TB_out;
+				alu_y_b <= TB_out; --
 			when "100" =>
-				alu_y_b <= TC_out;
+				alu_y_b <= TC_out; --
 			when others =>
 				alu_y_b <= (others=>'0');
 		end case;
@@ -272,28 +274,28 @@ begin
 			when "00" =>
 				alu_y_a <= PC_out;
 			when "01" =>
-				alu_y_a <= TA_out;
+				alu_y_a <= TA_out; --
 			when "10" =>
-				alu_y_a <= TB_out;
+				alu_y_a <= TB_out; --
 			when "11" =>
-				alu_y_a <= se9_outp;
+				alu_y_a <= se9_outp; --
 			when others =>
 				alu_y_a <= (others=>'0');
 		end case; 
 		
 		case(PC_mux) is
 			when "000" =>
-				PC_in <= alu_y_out;
+				PC_in <= alu_y_out; --
 			when "001" =>
-				PC_in <= alu_x_out;
+				PC_in <= alu_x_out; --
 			when "010" =>
-				PC_in <= TA_out;
+				PC_in <= TA_out; --
 			when "011" =>
-				PC_in <= TB_out;
+				PC_in <= TB_out; --
 			when "100" =>
-				PC_in <= TC_out;
+				PC_in <= TC_out; --
 			when "101" =>
-				PC_in <= LS7_outp;
+				PC_in <= LS7_outp; --
 			when others =>
 				PC_in <= (others=>'0');
 		end case;
