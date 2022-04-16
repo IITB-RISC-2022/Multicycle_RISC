@@ -185,13 +185,13 @@ begin
 	begin
 		case(rf_a1_mux) is 
 			when "00" =>
-				rf_a1_in <= IR_out(11 downto 9); --
-			when "01" =>
-				rf_a1_in <= TD_out; --
-			when "10" =>
-				rf_a1_in <= "111";
-			when others =>
 				rf_a1_in <= "000";
+			when "01" =>
+				rf_a1_in <= IR_out(11 downto 9); --
+			when "10" =>
+				rf_a1_in <= TD_out; --
+			when others =>
+				rf_a1_in <= "111";
 		end case;
 				
 				
@@ -201,57 +201,57 @@ begin
 			when "01" =>
 				rf_a3_in <= TD_out; --
 			when "10" =>
-				rf_a3_in <= IR_out(11 downto 9); --
-			when others =>
 				rf_a3_in <= IR_out(5 downto 3); --
+			when others =>
+				rf_a3_in <= IR_out(11 downto 9); --
 		end case;
 		
 		case(rf_d3_mux) is 
 			when "00" =>
-				rf_d3_in <= LS7_outp; --
+				rf_d3_in <= (others => '0');
 			when "01" =>
 				rf_d3_in <= TA_out; --
 			when "10" =>
 				rf_d3_in <= TC_out; --
 			when others =>
-				rf_d3_in <= (others => '0');
+				rf_d3_in <= LS7_outp; --
 		end case;
 
 		case(tb_mux) is 
 			when "00" =>
-				TB_in <= PE_out; --
-			when "01" =>
-				TB_in <= se9_outp; --
-			when "10" =>
-				TB_in <= rf_d2_out; --
-			when others =>
 				TB_in <= (others => '0');
+			when "01" =>
+				TB_in <= rf_d2_out; --
+			when "10" =>
+				TB_in <= PE_out; --
+			when "11" =>
+				TB_in <= se9_outp; --
 		end case;		
 			
 		case(ta_mux) is 
 			when "00" =>
 				TA_in <= mem_data_out; --
 			when "01" =>
-				TA_in <= alu_y_out; --
-			when "10" =>
 				TA_in <= rf_d1_out; --
+			when "10" =>
+				TA_in <= alu_y_out; --
 			when others =>
 				TA_in <= alu_x_out;
 		end case;	
 		
 		case(tc_mux) is 
 			when '0' =>
-				TC_in <= mem_data_out; --
-			when '1' =>
 				TC_in <= rf_d1_out; --
+			when '1' =>
+				TC_in <= mem_data_out; --
 		end case;	
 		
 		case(R7_mux) is 
-			when "00" =>
-				R7_in <= alu_y_out; --
 			when "01" =>
-				R7_in <= PC_out;  --
+				R7_in <= alu_y_out; --
 			when "10" =>
+				R7_in <= PC_out;  --
+			when "11" =>
 				R7_in <= TB_out; --
 			when others =>
 				R7_in <= (others => '0');
@@ -277,54 +277,54 @@ begin
 		
 		case(alu_y_b_mux) is
 			when "000" =>
-				alu_y_b <= LS1_outp; --
-			when "001" =>
 				alu_y_b <= se6_outp; --
+			when "001" =>
+				alu_y_b <= LS1_outp; --
 			when "010" =>
 				alu_y_b <= se9_outp; --
 			when "011" =>
-				alu_y_b <= TB_out; --
-			when "100" =>
 				alu_y_b <= TC_out; --
+			when "100" =>
+				alu_y_b <= TB_out; --
+			when "101" =>
+				alu_y_b <= one_16_bit; --
 			when others =>
 				alu_y_b <= (others=>'0');
 		end case;
 		
 		case(alu_y_a_mux) is
-		when "00" =>
-				alu_y_a <= PC_out;
+			when "00" =>
+				alu_y_a <= (others=>'0');
 			when "01" =>
 				alu_y_a <= TA_out; --
 			when "10" =>
 				alu_y_a <= TB_out; --
 			when "11" =>
 				alu_y_a <= se9_outp; --
-			when others =>
-				alu_y_a <= (others=>'0');
 		end case; 
 
 		case(alu_x_a_mux) is
 			when '0' =>
-				alu_x_a <= PC_out;
-			when '1' =>
 				alu_x_a <= TA_out;
+			when '1' =>
+				alu_x_a <= PC_out;
 			when others =>
 				alu_x_a <= (others => '0');
 		end case; 
 		
 		case(PC_mux) is
-			when "000" =>
-				PC_in <= alu_y_out; --
 			when "001" =>
-				PC_in <= alu_x_out; --
-			when "010" =>
 				PC_in <= TA_out; --
-			when "011" =>
-				PC_in <= TB_out; --
-			when "100" =>
-				PC_in <= TC_out; --
-			when "101" =>
+			when "010" =>
 				PC_in <= LS7_outp; --
+			when "011" =>
+				PC_in <= TC_out; --
+			when "100" =>
+				PC_in <= alu_x_out; --
+			when "101" =>
+				PC_in <= TB_out; --
+			when "110" =>
+				PC_in <= alu_y_out; --
 			when others =>
 				PC_in <= (others=>'0');
 		end case;
