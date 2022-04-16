@@ -5,7 +5,16 @@ use ieee.numeric_std.all;
 entity DATA_PATH is
 	port(
 	CLK, RST :in std_logic;
-	
+	ALU_OP : in std_logic_vector(2 downto 0);
+	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN : in std_logic_vector;
+	R7_sel, WR_EN : in std_logic;
+	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
+	ta_mux, tb_mux: in std_logic_vector(1 downto 0);
+	tc_mux, r7_mux: in std_logic;
+	mem_addr_mux, mem_di_mu: in std_logic_vector(1 downto 0);
+	alu_y_a_mux: in std_logic_vector(2 downto 0);
+	alu_y_b_mux: in std_logic_vector(1 downto 0);
+	PC_mux: in std_logic_vector(2 downto 0)
 	);
 end entity DATA_PATH;
 
@@ -17,7 +26,7 @@ architecture Complicated of DATA_PATH is
 			  RST: in std_logic;
 			  CLK: in std_logic;
 			  Q: out std_logic_vector(15 downto 0));
-	end component FF16;
+	end component;
 	
 	component FF3 is
 		port(D: in std_logic_vector(2 downto 0);
@@ -25,7 +34,7 @@ architecture Complicated of DATA_PATH is
 			  RST: in std_logic;
 			  CLK: in std_logic;
 			  Q: out std_logic_vector(2 downto 0));
-	end component FF3;	
+	end component;	
 	
 	component FF1 is
 		port(D: in std_logic;
@@ -33,24 +42,26 @@ architecture Complicated of DATA_PATH is
 			  RST: in std_logic;
 			  CLK: in std_logic;
 			  Q: out std_logic);
-	end component FF1;
+	end component;
 	
 	component REG_FILE is
 		port(CLK, RST : in std_logic;
-			  RF_A1 : in std_logic_vector(15 downto 0);
-			  RF_A2 : in std_logic_vector(15 downto 0);
-			  RF_A3 : in std_logic_vector(15 downto 0);
+			  WR_EN, r7_sel : in std_logic;
+			  RF_A1 : in std_logic_vector(2 downto 0);
+			  RF_A2 : in std_logic_vector(2 downto 0);
+			  RF_A3 : in std_logic_vector(2 downto 0);
 			  RF_D3 : in std_logic_vector(15 downto 0);
+			  R7_IN : in std_logic_vector(15 downto 0);
 			  RF_D1 : out std_logic_vector(15 downto 0);
 			  RF_D2 : out std_logic_vector(15 downto 0));
-	end component REG_FILE;
+	end component;
 	
 	component MEMORY is
 		port(CLK: in std_logic;
 			  ADDR: in std_logic_vector(15 downto 0);
 			  DATA: in std_logic_vector(15 downto 0);
 			  OUTP: out std_logic_vector(15 downto 0));
-	end component MEMORY;
+	end component;
 	
 	component ALU is
 		port(alu_op: in std_logic_vector(1 downto 0);
@@ -77,7 +88,7 @@ architecture Complicated of DATA_PATH is
 		port(
 		inp: in std_logic_vector(15 downto 0);
 		outp: out std_logic_vector(15 downto 0);
-		out_enc: out std_logic_vector(2 downto 0);
+		out_enc: out std_logic_vector(2 downto 0)
 		);
 	end component;
 	
@@ -96,23 +107,40 @@ architecture Complicated of DATA_PATH is
 	end component;
 	
 	signal one_16_bit: std_logic_vector(15 downto 0) := "0000000000000001";
-	signal alu_y_c, alu_y_z: std_logic;
 	signal alu_y_a, alu_y_b, alu_y_out: std_logic_vector(15 downto 0);
 	signal alu_x_c, alu_x_z: std_logic;
-	signal alu_x_a, alu_x_out: std_logic_vector(15 downto 0);
+	signal alu_x_out: std_logic_vector(15 downto 0);
 	
-	signal mem_addr_in, mem_data_in, mem_outp : std_logic_vector(15 downto 0);
-	signal rf_a1_in, rf_a2_in, rf_a3_in, rf_d3_in, rf_d1_out, rf_d2_out: std_logic_vector(15 downto 0);
+	signal mem_addr_in, mem_data_in, mem_data_out : std_logic_vector(15 downto 0);
+	signal rf_d3_in, rf_d1_out, rf_d2_out: std_logic_vector(15 downto 0);
+	signal rf_a1_in, rf_a3_in: std_logic_vector(2 downto 0);
+	
+	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TC_out, PC_in, PC_out, R7_in: std_logic_vector(15 downto 0);
+	signal se6_out, se9_out, LS7outp, LS1_outp : std_logic_vector(15 downto 0);
+	signal TD_in, TD_out: std_logic_vector(2 downto 0);
 begin
 	
-	ALU_Y : ALU port map(alu_op =>, inp_a =>alu_y_a, inp_b =>alu_y_b, out_c => alu_y_c, out_z => alu_y_z, alu_out => alu_y_out);
-	ALU_X : ALU port map(alu_op =>, inp_a =>alu_x_a, inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
+	ALU_Y : ALU port map(alu_op =>ALU_OP, inp_a =>alu_y_a, inp_b =>alu_y_b, out_c => C_IN, out_z => Z_IN, alu_out => alu_y_out);
+	flag_C: FF1 port map(D => C_in, EN=>C_EN, RST=>RST, CLK=>CLK, Q=>C_flag);
+	flag_Z: FF1 port map(D => Z_in, EN=>C_EN, RST=>RST, CLK=>CLK, Q=>Z_flag);
 	
-	RAM : MEMORY port map(CLK => CLK, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_outp);
+	ALU_X : ALU port map(alu_op =>"01", inp_a =>PC_out, inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
 	
-	REGISTER_FILE : REG_FILE port map(CLK => CLK, RST => RST, RF_A1 => rf_a1_in, RF_A2 => rf_a2_in, RF_A3 => rf_a3_in, RF_D3 => rf_d3_in, RF_D1 =>rf_d1_out, RF_D2=> rf_d2_out);
+	RAM : MEMORY port map(CLK => CLK, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
 	
-	IR : FF16 port map(D => IR_in,EN=> IR_EN, RST=> RST, CLK=>CLK, Q=>IR_out );
+	REGISTER_FILE : REG_FILE port map(CLK => CLK, 
+												 RST => RST, 
+												 WR_EN => wr_en, 
+												 r7_sel => r7_sel, 
+												 RF_A1 => rf_a1_in, 
+												 RF_A2 => IR_out(8 downto 6), 
+												 RF_A3 => rf_a3_in, 
+												 RF_D3 => rf_d3_in, 
+												 R7_IN => R7_IN,
+												 RF_D1 =>rf_d1_out, 
+												 RF_D2=> rf_d2_out);
+	
+	IR : FF16 port map(D => mem_data_out,EN=> IR_EN, RST=> RST, CLK=>CLK, Q=>IR_out );
 	TB : FF16 port map(D => TB_in,EN=> TB_EN, RST=> RST, CLK=>CLK, Q=>TB_out );
 	TA : FF16 port map(D => TA_in,EN=> TA_EN, RST=> RST, CLK=>CLK, Q=>TA_out );
 	TC : FF16 port map(D => TC_in,EN=> TC_EN, RST=> RST, CLK=>CLK, Q=>TC_out );
@@ -120,12 +148,157 @@ begin
 	
 	TD : FF3 port map(D => TD_in,EN=> TD_EN, RST=> RST, CLK=>CLK, Q=>TD_out );
 	
-	PE : PRIORITY_ENC port map(inp => pe_in,outp => pe_out,out_enc =>pe_out_enc);
+	PE : PRIORITY_ENC port map(inp => TB_out,outp => PE_out,out_enc =>TD_in);
 	
-	SE6: SignExt6 port map(inp => se6_inp, outp => se6_outp);
-	SE9: SignExt9 port map(inp => se9_inp, outp => se9_outp);
+	SE6: SignExt6 port map(inp => IR_out(5 downto 0), outp => se6_outp);
+	SE9: SignExt9 port map(inp => IR_out(8 downto 0), outp => se9_outp);
 	
-	LS1: LShifter1 port map(inp =>LS1_inp, outp =>LS1_outp);
-	LS7: LShifter7 port map(inp =>LS7_inp, outp =>LS7_outp);
+	LS1: LShifter1 port map(inp =>TB_out, outp =>LS1_outp);
+	LS7: LShifter7 port map(inp =>IR_out(8 downto 0), outp =>LS7_outp);
+	
+	process(
+	CLK, 
+	ALU_OP,
+	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN,
+	R7_sel, WR_EN,
+	rf_a1_mux, rf_a3_mux, rf_d3_mux, 
+	ta_mux, tb_mux, tc_mux,
+	r7_mux, mem_addr_mux, mem_di_mux,
+	alu_y_a_mux, alu_y_b_mux,
+	PC_mux
+	-- CONTROL BITS !
+	)
+	
+	begin
+		case(rf_a1_mux) is 
+			when "00" =>
+				rf_a1_in <= IR_out(11 downto 9);
+			when "01" =>
+				rf_a1_in <= TD_out;
+			when "10" =>
+				rf_a1_in <= "111";
+			when others =>
+				rf_a1_in <= "000";
+		end case;
+				
+				
+		case(rf_a3_mux) is 
+			when "00" =>
+				rf_a3_in <= IR_out(8 downto 6);
+			when "01" =>
+				rf_a3_in <= TD_out;
+			when "10" =>
+				rf_a3_in <= IR_out(11 downto 9);
+			when others =>
+				rf_a3_in <= IR_out(5 downto 3);
+		end case;
+		
+		case(rf_d3_mux) is 
+			when "00" =>
+				rf_d3_in <= LS7_outp;
+			when "01" =>
+				rf_d3_in <= TA_out;
+			when "10" =>
+				rf_d3_in <= TC_out;
+			when others =>
+				rf_d3_in <= (others => '0');
+		end case;
+
+		case(tb_mux) is 
+			when "00" =>
+				TB_in <= PE_out;
+			when "01" =>
+				TB_in <= se9_outp;
+			when "10" =>
+				TB_in <= rf_d2_out;
+			when others =>
+				TB_in <= (others => '0');
+		end case;		
+			
+		case(ta_mux) is 
+			when "00" =>
+				TA_in <= mem_data_out;
+			when "01" =>
+				TA_in <= alu_y_out;
+			when "10" =>
+				TA_in <= rf_d1_out;
+			when others =>
+				TA_in <= (others => '0');
+		end case;	
+		
+		case(tc_mux) is 
+			when '0' =>
+				TC_in <= mem_data_out;
+			when '1' =>
+				TC_in <= rf_d1_out;
+		end case;	
+		
+		case(R7_mux) is 
+			when '0' =>
+				R7_in <= alu_y_out;
+			when '1' =>
+				R7_in <= PC_out;
+		end case;	
+		
+		case(mem_addr_mux) is 
+			when '0' =>
+				mem_addr_in <= TA_out;
+			when '1' =>
+				mem_addr_in <= PC_out;
+				
+		case(mem_di_mux) is 
+			when '0' =>
+				mem_data_in <= TA_out;
+			when '1' =>
+				mem_data_in <= TC_out;
+		end case;	
+		
+		case(alu_y_a_mux) is
+			when "000" =>
+				alu_y_b <= LS1_outp;
+			when "001" =>
+				alu_y_b <= se6_outp;
+			when "010" =>
+				alu_y_b <= se9_outp;
+			when "011" =>
+				alu_y_b <= TB_out;
+			when "100" =>
+				alu_y_b <= TC_out;
+			when others =>
+				alu_y_b <= (others=>'0');
+		end case;
+		
+		case(alu_y_a_mux) is
+			when "00" =>
+				alu_y_a <= PC_out;
+			when "01" =>
+				alu_y_a <= TA_out;
+			when "10" =>
+				alu_y_a <= TB_out;
+			when "11" =>
+				alu_y_a <= se9_outp;
+			when others =>
+				alu_y_a <= (others=>'0');
+		end case; 
+		
+		case(PC_mux) is
+			when "000" =>
+				PC_in <= alu_y_out;
+			when "001" =>
+				PC_in <= alu_x_out;
+			when "010" =>
+				PC_in <= TA_out;
+			when "011" =>
+				PC_in <= TB_out;
+			when "100" =>
+				PC_in <= TC_out;
+			when "101" =>
+				PC_in <= LS7_outp;
+			when others =>
+				PC_in <= (others=>'0');
+		end case;
+	end process;
+	
+	
 	
 end architecture;

@@ -13,4 +13,4 @@ architecture Struc of SignExt9 is
 begin
   outp(5 downto 0) <= inp;
   outp(15 downto 6) <= (others =>inp(5));
-end SignedExtender;
+end Struc;

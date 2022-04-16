@@ -16,7 +16,7 @@ begin
 	process(D,En,CLK)
 	begin
 	if CLK'event and (CLK = '0') then
-		if reset = '1'
+		if reset = '1' then
 			Q <= '0';
 		elsif EN = '1' then
 			Q <= D;

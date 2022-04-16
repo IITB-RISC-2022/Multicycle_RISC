@@ -6,7 +6,7 @@ entity PRIORITY_ENC is
 		port(
 		inp: in std_logic_vector(15 downto 0);
 		outp: out std_logic_vector(15 downto 0);
-		out_enc: out std_logic_vector(2 downto 0);
+		out_enc: out std_logic_vector(2 downto 0)
 		);
 end entity;
 
