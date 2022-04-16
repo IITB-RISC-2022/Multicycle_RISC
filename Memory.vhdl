@@ -10,8 +10,8 @@ entity MEMORY is
 end MEMORY;
 
 architecture behav of MEMORY is
-	type vec_array is array(0 to 2**16 - 1) of std_logic_vector(15 downto 0);
-	signal RAM: vec_array;
+	type vec_array is array(0 to 2**5 - 1) of std_logic_vector(15 downto 0);
+	signal RAM: vec_array:= (others=>x"0000");
 begin
 	process(CLK, ADDR, DATA)
 	begin
