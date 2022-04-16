@@ -13,6 +13,7 @@ entity DATA_PATH is
 	tc_mux: in std_logic;
 	mem_addr_mux: in std_logic_vector(1 downto 0);
 	mem_di_mux: in std_logic;
+	alu_x_a_mux: in std_logic;
 	alu_y_a_mux: in std_logic_vector(2 downto 0);
 	alu_y_b_mux: in std_logic_vector(1 downto 0);
 	PC_mux: in std_logic_vector(2 downto 0);
@@ -117,7 +118,7 @@ architecture Complicated of DATA_PATH is
 	signal alu_y_a, alu_y_b, alu_y_out: std_logic_vector(15 downto 0);
 	signal alu_x_c, alu_x_z: std_logic;
 	signal C_in, Z_in: std_logic;
-	signal alu_x_out: std_logic_vector(15 downto 0);
+	signal alu_x_out, alu_x_A: std_logic_vector(15 downto 0);
 	
 	signal mem_addr_in, mem_data_in, mem_data_out : std_logic_vector(15 downto 0);
 	signal rf_d3_in, rf_d1_out, rf_d2_out: std_logic_vector(15 downto 0);
@@ -135,7 +136,7 @@ begin
 	flag_Z: FF1 port map(D => Z_in, EN=>Z_EN, RST=>RST, CLK=>CLK, Q=>Z_flag);
 	flag_TZ: FF1 port map(D => Z_in, EN=>TZ_EN, RST=>RST, CLK=>CLK, Q=>TZ_flag);
 	
-	ALU_X : ALU port map(alu_op =>"01", inp_a =>PC_out, --
+	ALU_X : ALU port map(alu_op =>"01", inp_a =>alu_x_a, --
 								inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
 	
 	RAM : MEMORY port map(CLK => CLK, WR_Enable => mem_wr_en, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
@@ -176,7 +177,7 @@ begin
 	rf_a1_mux, rf_a3_mux, rf_d3_mux, 
 	ta_mux, tb_mux, tc_mux,
 	r7_mux, mem_addr_mux, mem_di_mux,
-	alu_y_a_mux, alu_y_b_mux,
+	alu_y_a_mux, alu_y_b_mux, alu_x_a_mux,
 	PC_mux
 	-- CONTROL BITS !
 	)
@@ -235,7 +236,7 @@ begin
 			when "10" =>
 				TA_in <= rf_d1_out; --
 			when others =>
-				TA_in <= (others=>'0');
+				TA_in <= alu_x_out;
 		end case;	
 		
 		case(tc_mux) is 
@@ -288,7 +289,7 @@ begin
 		end case;
 		
 		case(alu_y_a_mux) is
-			when "00" =>
+		when "00" =>
 				alu_y_a <= PC_out;
 			when "01" =>
 				alu_y_a <= TA_out; --
@@ -298,6 +299,15 @@ begin
 				alu_y_a <= se9_outp; --
 			when others =>
 				alu_y_a <= (others=>'0');
+		end case; 
+
+		case(alu_x_a_mux) is
+			when '0' =>
+				alu_x_a <= PC_out;
+			when '1' =>
+				alu_x_a <= TA_out;
+			when others =>
+				alu_x_a <= (others => '0');
 		end case; 
 		
 		case(PC_mux) is
