@@ -7,7 +7,7 @@ entity DATAPATH is
 	CLK, RST :in std_logic;
 	ALU_OP : in std_logic_vector(1 downto 0);
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TZ_EN, TD_EN : in std_logic;
-	R7_sel, REG_WR_EN, mem_wr_en : in std_logic;
+	R7_en, REG_WR_EN, mem_wr_en : in std_logic;
 	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
 	ta_mux, tb_mux, r7_mux: in std_logic_vector(1 downto 0);
 	tc_mux: in std_logic;
@@ -144,7 +144,7 @@ begin
 	REGISTER_FILE : REG_FILE port map(CLK => CLK, 
 												 RST => RST, 
 												 WR_EN => reg_wr_en, 
-												 r7_sel => r7_sel, 
+												 r7_en => r7_en, 
 												 RF_A1 => rf_a1_in, 
 												 RF_A2 => IR_out(8 downto 6), --
 												 RF_A3 => rf_a3_in, 
@@ -173,7 +173,7 @@ begin
 	CLK, 
 	ALU_OP,
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN,
-	R7_sel, REG_WR_EN, mem_wr_en,
+	R7_en, REG_WR_EN, mem_wr_en,
 	rf_a1_mux, rf_a3_mux, rf_d3_mux, 
 	ta_mux, tb_mux, tc_mux,
 	r7_mux, mem_addr_mux, mem_di_mux,
