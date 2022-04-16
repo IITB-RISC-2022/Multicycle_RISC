@@ -124,9 +124,9 @@ architecture Complicated of DATA_PATH is
 	signal rf_d3_in, rf_d1_out, rf_d2_out: std_logic_vector(15 downto 0);
 	signal rf_a1_in, rf_a3_in: std_logic_vector(2 downto 0);
 	
-	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TD_out, TC_out, PC_in, PC_out, PE_out, R7_in: std_logic_vector(15 downto 0);
+	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TC_out, PC_in, PC_out, PE_out, R7_in: std_logic_vector(15 downto 0);
 	signal se6_outp, se9_outp, LS7_outp, LS1_outp : std_logic_vector(15 downto 0);
-	signal TD_in: std_logic_vector(2 downto 0);
+	signal TD_in, TD_out: std_logic_vector(2 downto 0);
 begin
 	IR_outp <= IR_out;
 	TB_outp <= TB_out;
