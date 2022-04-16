@@ -11,7 +11,7 @@ end entity;
 
 architecture beh of reg_file_decoder is
 begin
-	en(7) <= m;
+	en(7) <= m and not(add(0) or add(1) or add(2));
 	en(6) <= add(2) and add(1) and (not add(0)) and m;
 	en(5) <= add(2) and (not add(1)) and add(0) and m;
 	en(4) <= add(2) and (not add(1)) and (not add(0)) and m;
@@ -23,9 +23,13 @@ end architecture;
 --------------------------------------------------------------------------
 -------------------------------REG FILE-----------------------------------
 --------------------------------------------------------------------------
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
 entity REG_FILE is
 		port(CLK, RST : in std_logic;
-			  WR_EN, r7_sel : in std_logic;
+			  WR_EN, r7_sel, r7_en : in std_logic;
 			  RF_A1 : in std_logic_vector(2 downto 0);
 			  RF_A2 : in std_logic_vector(2 downto 0);
 			  RF_A3 : in std_logic_vector(2 downto 0);
@@ -36,7 +40,7 @@ entity REG_FILE is
 end REG_FILE;
 
 architecture Behav of REG_FILE is
-	type regs is array(0 to 7) of std_logic_vector(NUM_BITS - 1 downto 0);
+	type regs is array(0 to 7) of std_logic_vector(15 downto 0);
 	signal reg_file_in, reg_file_out : regs;
 	
 	signal write_en: std_logic_vector(7 downto 0);
