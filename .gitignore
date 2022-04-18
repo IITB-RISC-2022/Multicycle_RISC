@@ -1,6 +1,6 @@
 DUT.vhdl
-outputs.txt
+outputs*.txt
 Testbench.vhdl
-tracefile_format.txt
-TRACEFILE-*.txt
+__*.txt
+TRACEFILE*.txt
 *.cf
