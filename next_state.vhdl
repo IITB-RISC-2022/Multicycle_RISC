@@ -9,11 +9,12 @@ entity next_state is
 			Z_flag: in std_logic;
 			TZ_flag: in std_logic;
 			TB: in std_logic_vector(15 downto 0);
-			RF_a3: in std_logic_vector(15 downto 0)
+			RF_a3: in std_logic_vector(2 downto 0);
+			next_state: out std_logic_vector(4 downto 0)
 			);
 end entity;
 
-architecture beh of next_sate is
+architecture beh of next_state is
 
 begin
 	process(curr_state, IR, C_flag, Z_flag, TZ_flag, TB, RF_a3)
@@ -38,11 +39,13 @@ begin
 							next_state <= "11001";
 							else 
 							next_state <= "00011";
+							end if;
 						when "10"=>
 							if (Z_flag = '0') then
 							next_state <= "11001";
 							else 
-							next_state <= "00011";	
+							next_state <= "00011";
+							end if;
 						when "11"=>
 							next_state <= "00101";
 					end case;
@@ -55,13 +58,15 @@ begin
 							next_state <= "11001";
 							else 
 							next_state <= "00011";
+							end if;
 						when "10"=>
 							if (Z_flag = '0') then
 							next_state <= "11001";
 							else 
 							next_state <= "00011";	
+							end if;
 						when others=>
-							next_state <= (others => 0);
+							next_state <= (others => '0');
 					end case;
 				when "0011" =>
 					next_state <= "00111";
@@ -93,6 +98,7 @@ begin
 				next_state <= "11000";
 			else
 				next_state <= "11001";
+			end if;
 		when "00101" =>
 			next_state <= "00100";
 		when "00110" =>
@@ -102,6 +108,7 @@ begin
 				next_state <= "11010"; --26
 			else
 				next_state <= "11001"; --25
+			end if;
 		when "01000" =>
 			if IR(15 downto 12) = "0111" then
 				next_state <= "01001";
@@ -117,6 +124,7 @@ begin
 				next_state <= "11000";
 			else
 				next_state <= "11001";	
+			end if;
 		when "01011" =>
 			next_state <= "00001"; --1
 		when "01100" =>
@@ -148,11 +156,13 @@ begin
 				next_state <= "00001";
 			else
 				next_state <= "01101";
+			end if;
 		when "10010" =>
-			if TZ = '1' then 
+			if TZ_flag = '1' then 
 				next_state <= "10011";
 			else
 				next_state <= "00001";
+			end if;
 		when "10011" =>
 			next_state <= "00001";
 		when "10100" =>
@@ -175,6 +185,8 @@ begin
 			next_state <= "00001";
 		when "11011" =>
 			next_state <= "00001";
+		when others =>
+			next_state <= "00000";
 	end case;
 	end process;
 end architecture;
