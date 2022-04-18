@@ -186,7 +186,7 @@ begin
 		when "11011" =>
 			NS <= "00001";
 		when others =>
-			NS <= "00000";
+			NS <= "00001";
 	end case;
 	end process;
 end architecture;
