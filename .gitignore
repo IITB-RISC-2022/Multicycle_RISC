@@ -1,0 +1,6 @@
+DUT.vhdl
+outputs.txt
+Testbench.vhdl
+tracefile_format.txt
+TRACEFILE-*.txt
+*.cf
