@@ -128,6 +128,7 @@ architecture Complicated of DATAPATH is
 	signal se6_outp, se9_outp, LS7_outp, LS1_outp : std_logic_vector(15 downto 0);
 	signal TD_in, TD_out: std_logic_vector(2 downto 0);
 begin
+	IR_in <= mem_data_out;
 	IR_outp <= IR_out;
 	TB_outp <= TB_out;
 	RF_a3 <= rf_a3_in;
@@ -244,6 +245,7 @@ begin
 				TC_in <= mem_data_out; --
 			when '1' =>
 				TC_in <= rf_d1_out; --
+			when others =>
 		end case;	
 		
 		case(R7_mux) is 
@@ -273,6 +275,7 @@ begin
 				mem_data_in <= TA_out; -- 
 			when '1' =>
 				mem_data_in <= TC_out; --
+			when others =>
 		end case;	
 		
 		case(alu_y_b_mux) is

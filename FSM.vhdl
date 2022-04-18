@@ -48,7 +48,7 @@ architecture beh of FSM is
 				TZ_flag: in std_logic;
 				TB: in std_logic_vector(15 downto 0);
 				RF_a3: in std_logic_vector(2 downto 0);
-				next_state: out std_logic_vector(4 downto 0)
+				NS: out std_logic_vector(4 downto 0)
 				);
 	end component;
 	
@@ -87,7 +87,7 @@ architecture beh of FSM is
 	signal curr_st8, next_st8 : std_logic_vector(4 downto 0);
 	signal cont_word : std_logic_vector(34 downto 0);
 begin
-	n: next_state port map(curr_state => curr_st8, IR => IR, C_flag =>C_flag, Z_flag => Z_flag, TZ_flag=> TZ_flag, TB => TB, RF_a3 =>RF_a3, next_state=>next_st8);
+	n: next_state port map(curr_state => curr_st8, IR => IR, C_flag =>C_flag, Z_flag => Z_flag, TZ_flag=> TZ_flag, TB => TB, RF_a3 =>RF_a3, NS=>next_st8);
 	c: control_word port map(s => curr_st8, X => cont_word);
 	D: Decoder port map(cw => cont_word, ALU_op => ALU_op, IR_EN => IR_EN, TA_EN => TA_EN, TB_EN=> TB_EN, TC_EN=> TC_EN, PC_EN=> PC_EN, 
 					C_EN=> C_EN, Z_EN=> Z_en, TZ_EN => TZ_EN, TD_EN=> TD_EN, r7_EN=> r7_en, reg_wr_en=> reg_wr_en,
