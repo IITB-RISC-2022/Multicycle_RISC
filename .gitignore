@@ -1,7 +1,8 @@
-DUT.vhdl
+# DUT.vhdl
 outputs*.txt
-Testbench.vhdl
+# Testbench.vhdl
 __*.txt
-TRACEFILE*.txt
+TRACEFILE-*.txt
 *.cf
-compile.sh
+# compile.sh
+# *.ghw
