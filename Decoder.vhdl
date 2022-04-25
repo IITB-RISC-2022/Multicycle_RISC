@@ -377,7 +377,7 @@ begin
 	 RF: RFDecoder port map(x => cw(29 downto 24), rf_a1_mux => rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux => rf_d3_mux, reg_wr_en => reg_wr_en);
 	 AYD: AluyDecoder port map(x => cw(23 downto 15), alu_y_a_mux => alu_y_a_mux, alu_y_b_mux => alu_y_b_mux, ALU_OP => ALU_OP, C_EN => C_EN, Z_EN => Z_EN, TZ_EN => TZ_EN);
 	 AXD: AluxDecoder port map(x => cw(14), alu_x_a_mux => alu_x_a_mux);
-	 PCD: PCDecoder port map(x => cw(13 downto 11), PC_EN => PC_EN);
+	 PCD: PCDecoder port map(x => cw(13 downto 11), PC_EN => PC_EN, PC_mux => PC_mux);
 	 R7D: R7Decoder port map(x => cw(10 downto 9), R7_mux => R7_mux, R7_EN => R7_EN);
 	 TAD: TADecoder port map(x => cw(8 downto 6),TA_mux => TA_mux, TA_EN => TA_EN);
 	 TBD: TBDecoder port map(x => cw(5 downto 4),TB_mux => TB_mux, TB_EN => TB_EN);

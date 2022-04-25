@@ -14,7 +14,7 @@ architecture Behav of PRIORITY_ENC is
 	signal temp_out, diff : std_logic_vector(15 downto 0);
 begin
 	temp_out <= std_logic_vector(unsigned(inp)-1) and inp;
-	diff <= std_logic_vector(unsigned(inp)-unsigned(temp_out));
+	outp <= std_logic_vector(unsigned(inp)-unsigned(temp_out));
 	out_enc(2) <= diff(7) or diff(6) or diff(5) or diff(4);
 	out_enc(1) <= diff(2) or diff(3) or diff(6) or diff(7);
 	out_enc(0) <= diff(1) or diff(3) or diff(5) or diff(7);
