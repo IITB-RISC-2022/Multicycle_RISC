@@ -219,7 +219,7 @@ begin
 	LS7: LShifter7 port map(inp =>IR_out(8 downto 0), outp =>LS7_outp);
 	
 	mux1: mux_4x1_3bit port map(inp_1 => IR_out(11 downto 9),inp_2 =>TD_out, inp_3 =>"111",inp_4=>"000", sel=> rf_a1_mux, outp=>rf_a1_in);
-	mux2: mux_4x1_3bit port map(inp_1 => IR_out(8 downto 6),inp_2 =>TD_out, inp_3 =>IR_out(11 downto 9),inp_4=>IR_out(5 downto 3), sel=> rf_a3_mux, outp=>rf_a3_in);
+	mux2: mux_4x1_3bit port map(inp_1 => IR_out(8 downto 6),inp_2 =>TD_out, inp_3 =>IR_out(5 downto 3), inp_4=>IR_out(11 downto 9), sel=> rf_a3_mux, outp=>rf_a3_in);
 	mux3: mux_4x1_16bit port map(inp_1 => LS7_outp,inp_2 =>TA_out, inp_3 =>TC_out,inp_4=>(others => '0'), sel=> rf_d3_mux, outp=>rf_d3_in);
 	mux4: mux_4x1_16bit port map(inp_1 => (others => '0'), inp_2 => rf_d2_out, inp_3 =>PE_out, inp_4 =>se9_outp, sel=> tb_mux, outp=>TB_in);
 	mux5: mux_4x1_16bit port map(inp_1 => mem_data_out,inp_2 =>rf_d1_out, inp_3 =>alu_y_out,inp_4=>alu_x_out, sel=> ta_mux, outp=>TA_in);

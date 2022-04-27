@@ -13,7 +13,7 @@ end MEMORY;
 architecture behav of MEMORY is
 	type vec_array is array(0 to 2**5 - 1) of std_logic_vector(15 downto 0);
 	--0111000000000010
-	signal RAM: vec_array:= (0 =>"0111000000000010", 1 => "0101000000000000", 2=>"0010000000000011", others=>"0000000000000001");
+	signal RAM: vec_array:= (0 =>"0111000000000100", 1 => "0111001000000011", 2=>"0001000001000000", 3=>"0001000001010010",4=>"0000000000000111",6=>"0000000000000100", others=>(others=>'1'));
 	-- signal RAM: vec_array:= (others=>b"0000000000000000");
 
 -- 00 00 000 001 002 0 00
@@ -26,11 +26,10 @@ begin
 			RAM(to_integer(unsigned(ADDR))) <= DATA;
 		end if;
 	end if;
-
+	
 	if RW_Enable = '1' then
 		out_t := RAM(to_integer(unsigned(ADDR)));
 	end if;
-
 	outp <= out_t;
 	end process;
 end architecture;
