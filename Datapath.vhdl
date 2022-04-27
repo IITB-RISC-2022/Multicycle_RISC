@@ -137,7 +137,7 @@ begin
 	flag_Z: FF1 port map(D => Z_in, EN=>Z_EN, RST=>RST, CLK=>CLK, Q=>Z_flag);
 	flag_TZ: FF1 port map(D => Z_in, EN=>TZ_EN, RST=>RST, CLK=>CLK, Q=>TZ_flag);
 	
-	ALU_X : ALU port map(alu_op =>"01", inp_a =>alu_x_a, --
+	ALU_X : ALU port map(alu_op =>"00", inp_a =>alu_x_a, --
 								inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
 	
 	RAM : MEMORY port map(CLK => CLK, WR_Enable => mem_wr_en, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
@@ -179,7 +179,8 @@ begin
 	ta_mux, tb_mux, tc_mux,
 	r7_mux, mem_addr_mux, mem_di_mux,
 	alu_y_a_mux, alu_y_b_mux, alu_x_a_mux,
-	PC_mux
+	PC_mux,
+	alu_x_out
 	-- CONTROL BITS !
 	)
 	
@@ -219,12 +220,12 @@ begin
 		end case;
 
 		case(tb_mux) is 
-			when "00" =>
-				TB_in <= PE_out; --
 			when "01" =>
-				TB_in <= se9_outp; --
+				TB_in <= rf_d2_out ;
 			when "10" =>
-				TB_in <= rf_d2_out; --
+				TB_in <= PE_out;
+			when "11" =>
+				TB_in <= se9_outp;
 			when others =>
 				TB_in <= (others => '0');
 		end case;		
@@ -233,18 +234,18 @@ begin
 			when "00" =>
 				TA_in <= mem_data_out; --
 			when "01" =>
-				TA_in <= alu_y_out; --
-			when "10" =>
 				TA_in <= rf_d1_out; --
+			when "10" =>
+				TA_in <= alu_y_out; --
 			when others =>
 				TA_in <= alu_x_out;
-		end case;	
+		end case;
 		
 		case(tc_mux) is 
 			when '0' =>
-				TC_in <= mem_data_out; --
-			when '1' =>
 				TC_in <= rf_d1_out; --
+			when '1' =>
+				TC_in <= mem_data_out; --
 			when others =>
 		end case;	
 		
@@ -280,22 +281,22 @@ begin
 		
 		case(alu_y_b_mux) is
 			when "000" =>
-				alu_y_b <= LS1_outp; --
-			when "001" =>
 				alu_y_b <= se6_outp; --
+			when "001" =>
+				alu_y_b <= LS1_outp; --
 			when "010" =>
 				alu_y_b <= se9_outp; --
 			when "011" =>
-				alu_y_b <= TB_out; --
-			when "100" =>
 				alu_y_b <= TC_out; --
+			when "100" =>
+				alu_y_b <= TB_out; --
+			when "101" =>
+				alu_y_b <= (0=>'1', others=>'0');
 			when others =>
 				alu_y_b <= (others=>'0');
 		end case;
 		
 		case(alu_y_a_mux) is
-		when "00" =>
-				alu_y_a <= PC_out;
 			when "01" =>
 				alu_y_a <= TA_out; --
 			when "10" =>
@@ -308,26 +309,26 @@ begin
 
 		case(alu_x_a_mux) is
 			when '0' =>
-				alu_x_a <= PC_out;
-			when '1' =>
 				alu_x_a <= TA_out;
+			when '1' =>
+				alu_x_a <= PC_out;
 			when others =>
 				alu_x_a <= (others => '0');
 		end case; 
 		
 		case(PC_mux) is
-			when "000" =>
-				PC_in <= alu_y_out; --
 			when "001" =>
-				PC_in <= alu_x_out; --
+				PC_in <= TA_out;
 			when "010" =>
-				PC_in <= TA_out; --
+				PC_in <= LS7_outp;
 			when "011" =>
-				PC_in <= TB_out; --
+				PC_in <= TC_out;
 			when "100" =>
-				PC_in <= TC_out; --
+				PC_in <= alu_x_out;
 			when "101" =>
-				PC_in <= LS7_outp; --
+				PC_in <= TB_out;
+			when "110" =>
+				PC_in <= alu_y_out;
 			when others =>
 				PC_in <= (others=>'0');
 		end case;
