@@ -221,7 +221,7 @@ begin
 	mux1: mux_4x1_3bit port map(inp_1 => IR_out(11 downto 9),inp_2 =>TD_out, inp_3 =>"111",inp_4=>"000", sel=> rf_a1_mux, outp=>rf_a1_in);
 	mux2: mux_4x1_3bit port map(inp_1 => IR_out(8 downto 6),inp_2 =>TD_out, inp_3 =>IR_out(11 downto 9),inp_4=>IR_out(5 downto 3), sel=> rf_a3_mux, outp=>rf_a3_in);
 	mux3: mux_4x1_16bit port map(inp_1 => LS7_outp,inp_2 =>TA_out, inp_3 =>TC_out,inp_4=>(others => '0'), sel=> rf_d3_mux, outp=>rf_d3_in);
-	mux4: mux_4x1_16bit port map(inp_1 => rf_d2_out,inp_2 =>PE_out, inp_3 =>se9_outp,inp_4=>(others => '0'), sel=> tb_mux, outp=>TB_in);
+	mux4: mux_4x1_16bit port map(inp_1 => (others => '0'), inp_2 => rf_d2_out, inp_3 =>PE_out, inp_4 =>se9_outp, sel=> tb_mux, outp=>TB_in);
 	mux5: mux_4x1_16bit port map(inp_1 => mem_data_out,inp_2 =>rf_d1_out, inp_3 =>alu_y_out,inp_4=>alu_x_out, sel=> ta_mux, outp=>TA_in);
 	mux6: mux_2x1_16bit port map(inp_1 => rf_d1_out, inp_2 => mem_data_out, outp => TC_in, sel =>tc_mux);
 	mux7: mux_4x1_16bit port map(inp_1 => alu_y_out, inp_2 => PC_out, inp_3 => TB_out,inp_4 => (others => '0'),outp => R7_in, sel => R7_mux);
@@ -229,9 +229,9 @@ begin
 	mux9: mux_2x1_16bit port map(inp_1 => TA_out, inp_2 => TC_out, outp => mem_data_in, sel => mem_di_mux);
 	mux10: mux_8x1_16bit port map(inp_1 => se6_outp, inp_2 => LS1_outp, inp_3 => se9_outp, inp_4 => TC_out,
 	inp_5 => TB_out, inp_6 => (0=>'1', others=>'0'),inp_7 => (others =>'0'),inp_8 => (others =>'0'),outp => alu_y_b, sel => alu_y_b_mux);
-	mux11: mux_4x1_16bit port map(inp_1 => TA_out, inp_2 => TB_out, inp_3 => se9_outp, inp_4 => (others =>'0'),
+	mux11: mux_4x1_16bit port map(inp_1 => (others =>'0') ,inp_2 => TA_out, inp_3 => TB_out, inp_4 => se9_outp,
 	outp => alu_y_a, sel => alu_y_a_mux);
 	mux12: mux_2x1_16bit port map(inp_1 => TA_out, inp_2 => PC_out, outp => alu_x_a, sel => alu_x_a_mux);
-	mux13: mux_8x1_16bit port map(inp_1 => TA_out, inp_2 => LS7_outp, inp_3 => TC_out, inp_4 => alu_x_out,
-	inp_5 => TB_out, inp_6 => alu_y_out, inp_7 => (others =>'0'), inp_8 => (others =>'0'),outp => PC_in, sel => PC_mux);
+	mux13: mux_8x1_16bit port map(inp_1 => (others =>'0'), inp_2 => TA_out, inp_3 => LS7_outp, inp_4 => TC_out, inp_5 => alu_x_out,
+	inp_6 => TB_out, inp_7 => alu_y_out, inp_8 => (others =>'0'), outp => PC_in, sel => PC_mux);
 end architecture;

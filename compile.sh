@@ -3,7 +3,7 @@
 echo "Hi"
 
 setopt aliases
-
+ghdl -a muxes.vhdl
 ghdl -a ALU.vhdl
 ghdl -e ALU
 
