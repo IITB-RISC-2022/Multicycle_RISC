@@ -11,7 +11,10 @@ end MEMORY;
 
 architecture behav of MEMORY is
 	type vec_array is array(0 to 2**5 - 1) of std_logic_vector(15 downto 0);
-	signal RAM: vec_array:= (others=>x"0000");
+	signal RAM: vec_array:= (0 =>"0010000000000001", others=>"0000000000000000");
+	-- signal RAM: vec_array:= (others=>b"0000000000000000");
+
+-- 00 00 000 001 002 0 00
 begin
 	process(CLK, ADDR, DATA)
 	begin
