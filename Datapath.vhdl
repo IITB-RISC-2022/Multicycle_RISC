@@ -114,6 +114,54 @@ architecture Complicated of DATAPATH is
 		);
 	end component;
 	
+	component mux_2x1_16bit is
+	port (
+		 inp_1 : in std_logic_vector (15 downto 0);
+		 inp_2 : in std_logic_vector (15 downto 0);
+		 outp : out std_logic_vector (15 downto 0);
+		 sel : in std_logic
+	  );
+	end component;
+	
+	
+	component mux_4x1_3bit is
+	port (
+		 inp_1 : in std_logic_vector (2 downto 0);
+		 inp_2 : in std_logic_vector (2 downto 0);
+		 inp_3 : in std_logic_vector (2 downto 0);
+		 inp_4 : in std_logic_vector (2 downto 0);
+		 outp : out std_logic_vector (2 downto 0);
+		 sel : in std_logic_vector(1 downto 0)
+	  );
+	end component;
+	
+	component mux_4x1_16bit is
+	port (
+		 inp_1 : in std_logic_vector (15 downto 0);
+		 inp_2 : in std_logic_vector (15 downto 0);
+		 inp_3 : in std_logic_vector (15 downto 0);
+		 inp_4 : in std_logic_vector (15 downto 0);
+		 outp : out std_logic_vector (15 downto 0);
+		 sel : in std_logic_vector(1 downto 0)
+	  );
+	end component;
+	
+	component mux_8x1_16bit is
+	port (
+		 inp_1 : in std_logic_vector (15 downto 0);
+		 inp_2 : in std_logic_vector (15 downto 0);
+		 inp_3 : in std_logic_vector (15 downto 0);
+		 inp_4 : in std_logic_vector (15 downto 0);
+		 inp_5 : in std_logic_vector (15 downto 0);
+		 inp_6 : in std_logic_vector (15 downto 0);
+		 inp_7 : in std_logic_vector (15 downto 0);
+		 inp_8 : in std_logic_vector (15 downto 0);
+		 outp : out std_logic_vector (15 downto 0);
+		 sel : in std_logic_vector(2 downto 0)
+	  );
+	end component;
+
+		
 	signal one_16_bit: std_logic_vector(15 downto 0) := "0000000000000001";
 	signal alu_y_a, alu_y_b, alu_y_out: std_logic_vector(15 downto 0);
 	signal alu_x_c, alu_x_z: std_logic;
@@ -170,170 +218,20 @@ begin
 	LS1: LShifter1 port map(inp =>TB_out, outp =>LS1_outp);
 	LS7: LShifter7 port map(inp =>IR_out(8 downto 0), outp =>LS7_outp);
 	
-	process(
-	CLK, 
-	ALU_OP,
-	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TD_EN,
-	R7_en, REG_WR_EN, mem_wr_en,
-	rf_a1_mux, rf_a3_mux, rf_d3_mux, 
-	ta_mux, tb_mux, tc_mux,
-	r7_mux, mem_addr_mux, mem_di_mux,
-	alu_y_a_mux, alu_y_b_mux, alu_x_a_mux,
-	PC_mux,
-	alu_x_out
-	-- CONTROL BITS !
-	)
-	
-	begin
-		case(rf_a1_mux) is 
-			when "00" =>
-				rf_a1_in <= IR_out(11 downto 9); --
-			when "01" =>
-				rf_a1_in <= TD_out; --
-			when "10" =>
-				rf_a1_in <= "111";
-			when others =>
-				rf_a1_in <= "000";
-		end case;
-				
-				
-		case(rf_a3_mux) is 
-			when "00" =>
-				rf_a3_in <= IR_out(8 downto 6); --
-			when "01" =>
-				rf_a3_in <= TD_out; --
-			when "10" =>
-				rf_a3_in <= IR_out(11 downto 9); --
-			when others =>
-				rf_a3_in <= IR_out(5 downto 3); --
-		end case;
-		
-		case(rf_d3_mux) is 
-			when "00" =>
-				rf_d3_in <= LS7_outp; --
-			when "01" =>
-				rf_d3_in <= TA_out; --
-			when "10" =>
-				rf_d3_in <= TC_out; --
-			when others =>
-				rf_d3_in <= (others => '0');
-		end case;
-
-		case(tb_mux) is 
-			when "01" =>
-				TB_in <= rf_d2_out ;
-			when "10" =>
-				TB_in <= PE_out;
-			when "11" =>
-				TB_in <= se9_outp;
-			when others =>
-				TB_in <= (others => '0');
-		end case;		
-			
-		case(ta_mux) is 
-			when "00" =>
-				TA_in <= mem_data_out; --
-			when "01" =>
-				TA_in <= rf_d1_out; --
-			when "10" =>
-				TA_in <= alu_y_out; --
-			when others =>
-				TA_in <= alu_x_out;
-		end case;
-		
-		case(tc_mux) is 
-			when '0' =>
-				TC_in <= rf_d1_out; --
-			when '1' =>
-				TC_in <= mem_data_out; --
-			when others =>
-		end case;	
-		
-		case(R7_mux) is 
-			when "00" =>
-				R7_in <= alu_y_out; --
-			when "01" =>
-				R7_in <= PC_out;  --
-			when "10" =>
-				R7_in <= TB_out; --
-			when others =>
-				R7_in <= (others => '0');
-		end case;	
-		
-		case(mem_addr_mux) is 
-			when "00" =>
-				mem_addr_in <= TA_out; --
-			when "01" =>
-				mem_addr_in <= PC_out; --
-			when "10" =>
-				mem_addr_in <= TB_out; --
-			when others =>
-				mem_addr_in <= (others =>'0');
-		end case;
-				
-		case(mem_di_mux) is 
-			when '0' =>
-				mem_data_in <= TA_out; -- 
-			when '1' =>
-				mem_data_in <= TC_out; --
-			when others =>
-		end case;	
-		
-		case(alu_y_b_mux) is
-			when "000" =>
-				alu_y_b <= se6_outp; --
-			when "001" =>
-				alu_y_b <= LS1_outp; --
-			when "010" =>
-				alu_y_b <= se9_outp; --
-			when "011" =>
-				alu_y_b <= TC_out; --
-			when "100" =>
-				alu_y_b <= TB_out; --
-			when "101" =>
-				alu_y_b <= (0=>'1', others=>'0');
-			when others =>
-				alu_y_b <= (others=>'0');
-		end case;
-		
-		case(alu_y_a_mux) is
-			when "01" =>
-				alu_y_a <= TA_out; --
-			when "10" =>
-				alu_y_a <= TB_out; --
-			when "11" =>
-				alu_y_a <= se9_outp; --
-			when others =>
-				alu_y_a <= (others=>'0');
-		end case; 
-
-		case(alu_x_a_mux) is
-			when '0' =>
-				alu_x_a <= TA_out;
-			when '1' =>
-				alu_x_a <= PC_out;
-			when others =>
-				alu_x_a <= (others => '0');
-		end case; 
-		
-		case(PC_mux) is
-			when "001" =>
-				PC_in <= TA_out;
-			when "010" =>
-				PC_in <= LS7_outp;
-			when "011" =>
-				PC_in <= TC_out;
-			when "100" =>
-				PC_in <= alu_x_out;
-			when "101" =>
-				PC_in <= TB_out;
-			when "110" =>
-				PC_in <= alu_y_out;
-			when others =>
-				PC_in <= (others=>'0');
-		end case;
-	end process;
-	
-	
-	
+	mux1: mux_4x1_3bit port map(inp_1 => IR_out(11 downto 9),inp_2 =>TD_out, inp_3 =>"111",inp_4=>"000", sel=> rf_a1_mux, outp=>rf_a1_in);
+	mux2: mux_4x1_3bit port map(inp_1 => IR_out(8 downto 6),inp_2 =>TD_out, inp_3 =>IR_out(11 downto 9),inp_4=>IR_out(5 downto 3), sel=> rf_a3_mux, outp=>rf_a3_in);
+	mux3: mux_4x1_16bit port map(inp_1 => LS7_outp,inp_2 =>TA_out, inp_3 =>TC_out,inp_4=>(others => '0'), sel=> rf_d3_mux, outp=>rf_d3_in);
+	mux4: mux_4x1_16bit port map(inp_1 => rf_d2_out,inp_2 =>PE_out, inp_3 =>se9_outp,inp_4=>(others => '0'), sel=> tb_mux, outp=>TB_in);
+	mux5: mux_4x1_16bit port map(inp_1 => mem_data_out,inp_2 =>rf_d1_out, inp_3 =>alu_y_out,inp_4=>alu_x_out, sel=> ta_mux, outp=>TA_in);
+	mux6: mux_2x1_16bit port map(inp_1 => rf_d1_out, inp_2 => mem_data_out, outp => TC_in, sel =>tc_mux);
+	mux7: mux_4x1_16bit port map(inp_1 => alu_y_out, inp_2 => PC_out, inp_3 => TB_out,inp_4 => (others => '0'),outp => R7_in, sel => R7_mux);
+	mux8: mux_4x1_16bit port map(inp_1 => TA_out, inp_2 => PC_out, inp_3 => TB_out, inp_4 => (others =>'0'), outp => mem_addr_in, sel => mem_addr_mux);
+	mux9: mux_2x1_16bit port map(inp_1 => TA_out, inp_2 => TC_out, outp => mem_data_in, sel => mem_di_mux);
+	mux10: mux_8x1_16bit port map(inp_1 => se6_outp, inp_2 => LS1_outp, inp_3 => se9_outp, inp_4 => TC_out,
+	inp_5 => TB_out, inp_6 => (0=>'1', others=>'0'),inp_7 => (others =>'0'),inp_8 => (others =>'0'),outp => alu_y_b, sel => alu_y_b_mux);
+	mux11: mux_4x1_16bit port map(inp_1 => TA_out, inp_2 => TB_out, inp_3 => se9_outp, inp_4 => (others =>'0'),
+	outp => alu_y_a, sel => alu_y_a_mux);
+	mux12: mux_2x1_16bit port map(inp_1 => TA_out, inp_2 => PC_out, outp => alu_x_a, sel => alu_x_a_mux);
+	mux13: mux_8x1_16bit port map(inp_1 => TA_out, inp_2 => LS7_outp, inp_3 => TC_out, inp_4 => alu_x_out,
+	inp_5 => TB_out, inp_6 => alu_y_out, inp_7 => (others =>'0'), inp_8 => (others =>'0'),outp => PC_in, sel => PC_mux);
 end architecture;
