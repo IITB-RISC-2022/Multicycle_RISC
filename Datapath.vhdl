@@ -7,7 +7,7 @@ entity DATAPATH is
 	CLK, RST :in std_logic;
 	ALU_OP : in std_logic_vector(1 downto 0);
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TZ_EN, TD_EN : in std_logic;
-	R7_en, REG_WR_EN, mem_wr_en : in std_logic;
+	R7_en, REG_WR_EN, mem_wr_en, mem_rw_en : in std_logic;
 	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
 	ta_mux, tb_mux, r7_mux: in std_logic_vector(1 downto 0);
 	tc_mux: in std_logic;
@@ -65,7 +65,7 @@ architecture Complicated of DATAPATH is
 	end component;
 	
 	component MEMORY is
-		port(CLK, WR_Enable: in std_logic;
+		port(CLK, WR_Enable, RW_Enable: in std_logic;
 			  ADDR: in std_logic_vector(15 downto 0);
 			  DATA: in std_logic_vector(15 downto 0);
 			  OUTP: out std_logic_vector(15 downto 0));
@@ -188,7 +188,7 @@ begin
 	ALU_X : ALU port map(alu_op =>"00", inp_a =>alu_x_a, --
 								inp_b =>one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
 	
-	RAM : MEMORY port map(CLK => CLK, WR_Enable => mem_wr_en, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
+	RAM : MEMORY port map(CLK => CLK, WR_Enable => mem_wr_en, RW_Enable => mem_rw_en, ADDR => mem_addr_in, DATA =>mem_data_in, OUTP => mem_data_out);
 	
 	REGISTER_FILE : REG_FILE port map(CLK => CLK, 
 												 RST => RST, 

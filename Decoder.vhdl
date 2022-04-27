@@ -7,7 +7,7 @@ entity MemoryDecoder is
     x: in std_logic_vector(4 downto 0);
     mem_di_mux: out std_logic;
     mem_addr_mux: out std_logic_vector(1 downto 0);
-    WR_Enable: out std_logic
+    WR_Enable, RW_Enable: out std_logic
     );
 end entity;
 
@@ -247,6 +247,7 @@ begin
         mem_di_mux <= x(4);
         mem_addr_mux <= x(3 downto 2);
         WR_Enable <= (x(1) and (not x(0)));
+		RW_Enable <= (not x(1)) and x(0);
     end process;
 end architecture;
 
@@ -260,7 +261,7 @@ entity Decoder is
 		cw: in std_logic_vector(34 downto 0);
 		mem_di_mux: out std_logic;
 		mem_addr_mux: out std_logic_vector(1 downto 0);
-		WR_Enable: out std_logic;
+		WR_Enable, RW_Enable: out std_logic;
 		rf_a1_mux, rf_a3_mux, rf_d3_mux: out std_logic_vector(1 downto 0);
 		reg_wr_en: out std_logic;
 		alu_y_a_mux: out std_logic_vector(1 downto 0);
@@ -289,7 +290,8 @@ architecture behav of Decoder is
 			x: in std_logic_vector(4 downto 0);
 			mem_di_mux: out std_logic;
 			mem_addr_mux: out std_logic_vector(1 downto 0);
-			WR_Enable: out std_logic
+			WR_Enable: out std_logic;
+			RW_Enable: out std_logic
 		);
 	end component;
 
@@ -373,7 +375,7 @@ architecture behav of Decoder is
 		);
 	end component;
 begin
-    MD: MemoryDecoder port map(x => cw(34 downto 30), mem_di_mux => mem_di_mux, mem_addr_mux => mem_addr_mux, WR_Enable => WR_Enable );
+    MD: MemoryDecoder port map(x => cw(34 downto 30), mem_di_mux => mem_di_mux, mem_addr_mux => mem_addr_mux, WR_Enable => WR_Enable, RW_Enable => RW_Enable );
 	 RF: RFDecoder port map(x => cw(29 downto 24), rf_a1_mux => rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux => rf_d3_mux, reg_wr_en => reg_wr_en);
 	 AYD: AluyDecoder port map(x => cw(23 downto 15), alu_y_a_mux => alu_y_a_mux, alu_y_b_mux => alu_y_b_mux, ALU_OP => ALU_OP, C_EN => C_EN, Z_EN => Z_EN, TZ_EN => TZ_EN);
 	 AXD: AluxDecoder port map(x => cw(14), alu_x_a_mux => alu_x_a_mux);
