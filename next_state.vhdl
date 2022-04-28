@@ -29,7 +29,9 @@ begin
 		when "00010" =>
 			case IR(15 downto 12) is
 				when "0000" =>
-					NS <= "00110";
+					NS <= "00111";
+				when "1110" =>
+					NS <= "00101";
 				when "0001" =>
 					case IR(1 downto 0) is
 						when "00"=>
@@ -105,11 +107,12 @@ begin
 		when "00110" =>
 			NS <= "00100";
 		when "00111" =>
-			if RF_a3 = "111" then
-				NS <= "11010"; --26
-			else
-				NS <= "11001"; --25
-			end if;
+			-- if RF_a3 = "111" then
+			-- 	NS <= "11010"; --26
+			-- else
+			-- 	NS <= "11001"; --25
+			-- end if;
+			NS <= "00001";
 		when "01000" =>
 			if IR(15 downto 12) = "0111" then
 				NS <= "01001";

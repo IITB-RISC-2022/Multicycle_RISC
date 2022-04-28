@@ -10,9 +10,9 @@ end entity;
 
 architecture Behave of control_word is
 	type bits is array(0 to 26) of std_logic_vector(34 downto 0);
-	signal control_bits : bits :=  ("00000000000000000000000000000000000",
+	signal control_bits : bits :=  (			"00000000000000000000000000000000000",
 												"00101000000000000000110000000000001",
-											   "00000010000000000000000000010010000",
+											    "00000010000000000000000000010010000",
 												"00000000000011000001000000011000000",
 												"00000001001000000000000000000000000",
 												"00000000000010000001000000011000000",
@@ -48,7 +48,7 @@ begin
 			when "0010" =>
 				temp_x(18 downto 17) := "10";
 			when others => 
-				
+				temp_x(18 downto 17) := "00";
 		end case;
 		X <= temp_x;
 	end process;
