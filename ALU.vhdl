@@ -14,11 +14,10 @@ end entity;
 architecture behav of ALU is
 begin
 	process(alu_op, inp_a, inp_b) 
-	-- acc_z is a temp var used to calculate whether all bits of temp_out are 0 or not
-	variable acc_z : std_logic := '0';
 	-- temp_out is a temp variable that stores the output of the ALU
 	variable temp_out, temp_a, temp_b : std_logic_vector(16 downto 0);
 	begin
+		temp_out := (others => '0');
 		if (alu_op = "00") then
 			temp_a(15 downto 0) := inp_a;
 			temp_b(15 downto 0) := inp_b;
@@ -36,15 +35,13 @@ begin
 			temp_out(15 downto 0) := std_logic_vector(unsigned(inp_a) - unsigned(inp_b));
 		end if;
 		
-		for i in 0 to 15 loop
-			acc_z := acc_z or temp_out(i);
-		end loop;
-		acc_z := not acc_z;
+		if temp_out(15 downto 0) = "0000000000000000" then 
+			out_z <= '1';
+		else
+			out_z <= '0';
+		end if;
 		
 		alu_out <= temp_out(15 downto 0);
-		out_z <= acc_z;
-		
-	
 	end process;
 
 end architecture;

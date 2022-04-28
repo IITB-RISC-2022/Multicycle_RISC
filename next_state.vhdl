@@ -35,13 +35,13 @@ begin
 						when "00"=>
 							NS <= "00011";
 						when "01"=>
-							if (C_flag = '0') then
+							if (Z_flag = '0') then
 								NS <= "11001";
 							else 
 								NS <= "00011";
 							end if;
 						when "10"=>
-							if (Z_flag = '0') then
+							if (C_flag = '0') then
 								NS <= "11001";
 							else 
 								NS <= "00011";
