@@ -47,7 +47,7 @@ begin
 								NS <= "00011";
 							end if;
 						when others =>
-							NS <= "00101";
+							NS <= "00110";
 					end case;
 				when "0010" =>
 					case(IR(1 downto 0)) is
