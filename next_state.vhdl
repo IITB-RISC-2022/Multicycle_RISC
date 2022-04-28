@@ -35,19 +35,19 @@ begin
 						when "00"=>
 							NS <= "00011";
 						when "01"=>
-							if (C_flag = '0') then
-								NS <= "11001";
-							else 
-								NS <= "00011";
-							end if;
-						when "10"=>
 							if (Z_flag = '0') then
 								NS <= "11001";
 							else 
 								NS <= "00011";
 							end if;
+						when "10"=>
+							if (C_flag = '0') then
+								NS <= "11001";
+							else 
+								NS <= "00011";
+							end if;
 						when others =>
-							NS <= "00101";
+							NS <= "00110";
 					end case;
 				when "0010" =>
 					case(IR(1 downto 0)) is

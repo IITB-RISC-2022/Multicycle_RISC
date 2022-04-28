@@ -5,20 +5,19 @@ use ieee.numeric_std.all;
 --------------------------------------------------------------------------
 entity reg_file_decoder is
 	port (add: in std_logic_vector(2 downto 0);
-			m: in std_logic;
+			wr_en: in std_logic;
 			en: out std_logic_vector(7 downto 0));
 end entity;
 
 architecture beh of reg_file_decoder is
 begin
-	en(7) <= m and not(add(0) or add(1) or add(2));
-	en(6) <= add(2) and add(1) and (not add(0)) and m;
-	en(5) <= add(2) and (not add(1)) and add(0) and m;
-	en(4) <= add(2) and (not add(1)) and (not add(0)) and m;
-	en(3) <= (not add(2)) and add(1) and add(0) and m;
-	en(2) <= (not add(1)) and add(1) and (not add(0)) and m;
-	en(1) <= (not add(1)) and (not add(1)) and add(0) and m;
-	en(0) <= (not add(1)) and (not add(1)) and (not add(0))and m;
+	process(add, wr_en)
+		variable temp_en : std_logic_vector(7 downto 0);
+	begin
+		temp_en := (others => '0');
+		temp_en(to_integer(unsigned(add))) := wr_en;
+		en <= temp_en;
+	end process;
 end architecture;
 --------------------------------------------------------------------------
 -------------------------------REG FILE-----------------------------------
@@ -47,7 +46,7 @@ architecture Behav of REG_FILE is
 	
 	component reg_file_decoder is
 		port (add: in std_logic_vector(2 downto 0);
-				m: in std_logic;
+				wr_en: in std_logic;
 				en: out std_logic_vector(7 downto 0));
 	end component;
 	
@@ -64,7 +63,7 @@ begin
 	rf_d1 <= reg_file_out(to_integer(unsigned(RF_A1)));
 	rf_d2 <= reg_file_out(to_integer(unsigned(RF_A2)));
 	
-	dec: reg_file_decoder port map(add => RF_A3, m => WR_EN, en => write_en);
+	dec: reg_file_decoder port map(add => RF_A3, wr_en => WR_EN, en => write_en);
 	
 	reg_file_in(0 to 6) <= (others =>RF_D3);
 	with r7_en select reg_file_in(7) <= 
