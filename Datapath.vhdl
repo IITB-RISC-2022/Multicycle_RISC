@@ -54,14 +54,13 @@ architecture Complicated of DATAPATH is
 	
 	component REG_FILE is
 		port(CLK, RST : in std_logic;
-			  WR_EN, r7_en : in std_logic;
+			  WR_EN : in std_logic;
 			  RF_A1 : in std_logic_vector(2 downto 0);
 			  RF_A2 : in std_logic_vector(2 downto 0);
 			  RF_A3 : in std_logic_vector(2 downto 0);
 			  RF_D3 : in std_logic_vector(15 downto 0);
-			  R7_IN : in std_logic_vector(15 downto 0);
 			  RF_D1 : out std_logic_vector(15 downto 0);
-			  RF_D2 : out std_logic_vector(15 downto 0)
+			  RF_D2 : out std_logic_vector(15 downto 0);
 			  PC_D : in std_logic_vector(15 downto 0); 
 			  PC_EN : in std_logic;
 			  PC_Q : out std_logic_vector(15 downto 0)
@@ -197,12 +196,10 @@ begin
 	REGISTER_FILE : REG_FILE port map(CLK => CLK, 
 												 RST => RST, 
 												 WR_EN => reg_wr_en, 
-												 r7_en => r7_en, 
 												 RF_A1 => rf_a1_in, 
-												 RF_A2 => IR_out(8 downto 6), --
+												 RF_A2 => IR_out(8 downto 6),
 												 RF_A3 => rf_a3_in, 
 												 RF_D3 => rf_d3_in, 
-												 R7_IN => R7_IN,
 												 RF_D1 =>rf_d1_out, 
 												 RF_D2=> rf_d2_out,
 												 PC_D => PC_in,
