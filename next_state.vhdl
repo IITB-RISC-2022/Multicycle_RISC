@@ -75,7 +75,7 @@ begin
 				when "0111" =>
 					NS <= "01000";
 				when "0101" =>
-					NS <= "01000";
+					NS <= "11011";
 				when "1100" =>
 					NS <= "01100";
 				when "1101" =>
@@ -116,8 +116,8 @@ begin
 		when "01000" =>
 			if IR(15 downto 12) = "0111" then
 				NS <= "01001";
-			elsif IR(15 downto 12) = "0101" then
-				NS <= "01011";
+			-- elsif IR(15 downto 12) = "0101" then
+			-- 	NS <= "01011";
 			else
 				NS <= "00000";
 			end if;
@@ -190,7 +190,7 @@ begin
 		when "11001" =>
 			NS <= "00001";
 		when "11011" =>
-			NS <= "00001";
+			NS <= "01011";
 		when others =>
 			NS <= "00001";
 	end case;
