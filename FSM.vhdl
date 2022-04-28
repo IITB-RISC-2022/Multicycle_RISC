@@ -54,6 +54,7 @@ architecture beh of FSM is
 	
 	component control_word is 
 		port (s: in std_logic_vector(4 downto 0);
+				ir: in std_logic_vector(15 downto 0);
 				X: out std_logic_vector(34 downto 0));
 	end component;
 
@@ -87,9 +88,9 @@ architecture beh of FSM is
 	signal curr_st8, next_st8 : std_logic_vector(4 downto 0);
 	signal cont_word : std_logic_vector(34 downto 0);
 begin
-	n: next_state port map(curr_state => curr_st8, IR => IR, C_flag =>C_flag, Z_flag => Z_flag, TZ_flag=> TZ_flag, TB => TB, RF_a3 =>RF_a3, NS=>next_st8);
-	c: control_word port map(s => curr_st8, X => cont_word);
-	D: Decoder port map(cw => cont_word, ALU_op => ALU_op, IR_EN => IR_EN, TA_EN => TA_EN, TB_EN=> TB_EN, TC_EN=> TC_EN, PC_EN=> PC_EN, 
+	next_state1: next_state port map(curr_state => curr_st8, IR => IR, C_flag =>C_flag, Z_flag => Z_flag, TZ_flag=> TZ_flag, TB => TB, RF_a3 =>RF_a3, NS=>next_st8);
+	control_word1: control_word port map(s => curr_st8, ir => IR, X => cont_word);
+	decoder1: Decoder port map(cw => cont_word, ALU_op => ALU_op, IR_EN => IR_EN, TA_EN => TA_EN, TB_EN=> TB_EN, TC_EN=> TC_EN, PC_EN=> PC_EN, 
 					C_EN=> C_EN, Z_EN=> Z_en, TZ_EN => TZ_EN, TD_EN=> TD_EN, r7_EN=> r7_en, reg_wr_en=> reg_wr_en,
 					wr_enable => mem_wr_en, rw_enable => mem_rw_en, rf_a1_mux=> rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux=> rf_d3_mux,
 					ta_mux => ta_mux, tb_mux => tb_mux, tc_mux => tc_mux, r7_mux => r7_mux, mem_addr_mux => mem_addr_mux,

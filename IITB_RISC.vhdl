@@ -68,33 +68,33 @@ architecture ViruS of IITB_RISC is
 		);
 	end component DATAPATH;
 	
-	component Decoder is
-		 port(
-			cw: in std_logic_vector(34 downto 0);
-			mem_di_mux: out std_logic;
-			mem_addr_mux: out std_logic_vector(1 downto 0);
-			WR_Enable: out std_logic;
-			rf_a1_mux, rf_a3_mux, rf_d3_mux: out std_logic_vector(1 downto 0);
-			reg_wr_en: out std_logic;
-			alu_y_a_mux: out std_logic_vector(1 downto 0);
-			alu_y_b_mux: out std_logic_vector(2 downto 0);
-			ALU_OP: out std_logic_vector(1 downto 0);
-			C_EN, Z_EN, TZ_EN: out std_logic;
-			alu_x_a_mux: out std_logic;
-			PC_mux: out std_logic_vector(2 downto 0);
-			PC_EN: out std_logic;
-			R7_mux: out std_logic_vector(1 downto 0);
-			R7_EN: out std_logic;
-			TA_mux: out std_logic_vector(1 downto 0);
-			TA_EN: out std_logic;
-			TB_mux: out std_logic_vector(1 downto 0);
-			TB_EN: out std_logic;
-			TC_mux: out std_logic;
-			TC_EN: out std_logic;
-			TD_EN: out std_logic;
-			IR_EN: out std_logic
-		);
-	end component;
+	-- component Decoder is
+	-- 	 port(
+	-- 		cw: in std_logic_vector(34 downto 0);
+	-- 		mem_di_mux: out std_logic;
+	-- 		mem_addr_mux: out std_logic_vector(1 downto 0);
+	-- 		WR_Enable: out std_logic;
+	-- 		rf_a1_mux, rf_a3_mux, rf_d3_mux: out std_logic_vector(1 downto 0);
+	-- 		reg_wr_en: out std_logic;
+	-- 		alu_y_a_mux: out std_logic_vector(1 downto 0);
+	-- 		alu_y_b_mux: out std_logic_vector(2 downto 0);
+	-- 		ALU_OP: out std_logic_vector(1 downto 0);
+	-- 		C_EN, Z_EN, TZ_EN: out std_logic;
+	-- 		alu_x_a_mux: out std_logic;
+	-- 		PC_mux: out std_logic_vector(2 downto 0);
+	-- 		PC_EN: out std_logic;
+	-- 		R7_mux: out std_logic_vector(1 downto 0);
+	-- 		R7_EN: out std_logic;
+	-- 		TA_mux: out std_logic_vector(1 downto 0);
+	-- 		TA_EN: out std_logic;
+	-- 		TB_mux: out std_logic_vector(1 downto 0);
+	-- 		TB_EN: out std_logic;
+	-- 		TC_mux: out std_logic;
+	-- 		TC_EN: out std_logic;
+	-- 		TD_EN: out std_logic;
+	-- 		IR_EN: out std_logic
+	-- 	);
+	-- end component;
 	
 			signal IR_sig: std_logic_vector(15 downto 0);
 			signal	TB_sig: std_logic_vector(15 downto 0);
@@ -129,14 +129,14 @@ architecture ViruS of IITB_RISC is
 			signal	alu_y_b_mux_sig: std_logic_vector(2 downto 0);
 			signal	PC_mux_sig: std_logic_vector(2 downto 0);
 begin
-	f: FSM port map(CLK => CLK, RST => RST, IR=> IR_sig, RF_a3 => RF_a3_sig, C_flag=> C_flag_sig, Z_flag =>  Z_flag_sig, TZ_flag => TZ_flag_sig, TB => TB_sig,
+	fsm1: FSM port map(CLK => CLK, RST => RST, IR=> IR_sig, RF_a3 => RF_a3_sig, C_flag=> C_flag_sig, Z_flag =>  Z_flag_sig, TZ_flag => TZ_flag_sig, TB => TB_sig,
 						 ALU_op => ALU_op_sig, IR_EN => IR_EN_sig, TA_EN => TA_EN_sig, TB_EN=> TB_EN_sig, TC_EN=> TC_EN_sig, PC_EN=> PC_EN_sig, 
 						 C_EN=> C_EN_sig, Z_EN=> Z_en_sig, TZ_EN => TZ_EN_sig, TD_EN=> TD_EN_sig, r7_EN=> r7_en_sig, reg_wr_en=> reg_wr_en_sig,
 						 mem_wr_en => mem_wr_en_sig, mem_rw_en => mem_rw_en_sig, rf_a1_mux=> rf_a1_mux_sig, rf_a3_mux => rf_a3_mux_sig, rf_d3_mux=> rf_d3_mux_sig,
 						 ta_mux => ta_mux_sig, tb_mux => tb_mux_sig, tc_mux => tc_mux_sig, r7_mux => r7_mux_sig, mem_addr_mux => mem_addr_mux_sig,
 						 mem_di_mux => mem_di_mux_sig, alu_x_a_mux => alu_x_a_mux_sig, alu_y_a_mux => alu_y_a_mux_sig, alu_y_b_mux => alu_y_b_mux_sig,
 						 PC_mux => PC_mux_sig);
-	d: DATAPATH port map( 		CLK=> CLK, RST=> RST,
+	datapath1: DATAPATH port map( 		CLK=> CLK, RST=> RST,
 		ALU_OP => ALU_op_sig,
 		IR_EN =>IR_EN_sig , TA_EN =>TA_EN_sig , TB_EN =>Tb_EN_sig, TC_EN=>Tc_EN_sig, PC_EN=>pc_EN_sig, C_EN=>c_EN_sig, Z_EN=>z_EN_sig, TZ_EN=>Tz_EN_sig, TD_EN =>Td_EN_sig,
 		R7_en => R7_en_sig, REG_WR_EN => REG_WR_EN_sig, mem_wr_en => mem_WR_EN_sig, mem_rw_en => mem_RW_EN_sig,
