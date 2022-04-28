@@ -94,11 +94,12 @@ begin
 				NS <= "00100";
 			end if;
 		when "00100" =>
-			if RF_a3 = "111" then
-				NS <= "11000";
-			else
-				NS <= "11001";
-			end if;
+			-- if RF_a3 = "111" then
+			-- 	NS <= "11000";
+			-- else
+			-- 	NS <= "11001";
+			-- end if;
+			NS <= "00001";
 		when "00101" =>
 			NS <= "00100";
 		when "00110" =>
@@ -120,11 +121,12 @@ begin
 		when "01001" =>
 			NS <= "01010";
 		when "01010" =>
-			if RF_a3 = "111" then
-				NS <= "11000";
-			else
-				NS <= "11001";	
-			end if;
+			-- if RF_a3 = "111" then
+			-- 	NS <= "11000";
+			-- else
+			-- 	NS <= "11001";	
+			-- end if;
+			NS <= "00001";
 		when "01011" =>
 			NS <= "00001"; --1
 		when "01100" =>
@@ -139,11 +141,12 @@ begin
 			end if;
 		when "01110" =>
 			if TB = "0000000000000000" then
-				if RF_a3 = "111" then
-					NS <= "11000";
-				else
-					NS <= "11001";
-				end if;
+				-- if RF_a3 = "111" then
+				-- 	NS <= "11000";
+				-- else
+				-- 	NS <= "11001";
+				-- end if;
+				NS <= "00001";
 			else
 				NS <= "01101";
 			end if;
