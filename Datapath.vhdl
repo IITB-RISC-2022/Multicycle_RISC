@@ -61,7 +61,11 @@ architecture Complicated of DATAPATH is
 			  RF_D3 : in std_logic_vector(15 downto 0);
 			  R7_IN : in std_logic_vector(15 downto 0);
 			  RF_D1 : out std_logic_vector(15 downto 0);
-			  RF_D2 : out std_logic_vector(15 downto 0));
+			  RF_D2 : out std_logic_vector(15 downto 0)
+			  PC_D : in std_logic_vector(15 downto 0); 
+			  PC_EN : in std_logic;
+			  PC_Q : out std_logic_vector(15 downto 0)
+			  );
 	end component;
 	
 	component MEMORY is
@@ -200,13 +204,16 @@ begin
 												 RF_D3 => rf_d3_in, 
 												 R7_IN => R7_IN,
 												 RF_D1 =>rf_d1_out, 
-												 RF_D2=> rf_d2_out);
+												 RF_D2=> rf_d2_out,
+												 PC_D => PC_in,
+												 PC_EN=> PC_EN, 
+												 PC_Q=>PC_out 
+												 );
 	
 	IR : FF16 port map(D => mem_data_out, EN=> IR_EN, RST=> RST, CLK=>CLK, Q=>IR_out );
 	TB : FF16 port map(D => TB_in,EN=> TB_EN, RST=> RST, CLK=>CLK, Q=>TB_out );
 	TA : FF16 port map(D => TA_in,EN=> TA_EN, RST=> RST, CLK=>CLK, Q=>TA_out );
 	TC : FF16 port map(D => TC_in,EN=> TC_EN, RST=> RST, CLK=>CLK, Q=>TC_out );
-	PC : FF16 port map(D => PC_in,EN=> PC_EN, RST=> RST, CLK=>CLK, Q=>PC_out );
 	
 	TD : FF3 port map(D => TD_in,EN=> TD_EN, RST=> RST, CLK=>CLK, Q=>TD_out );
 	
