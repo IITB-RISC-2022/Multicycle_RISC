@@ -44,9 +44,6 @@ end REG_FILE;
 architecture Behav of REG_FILE is
 	type regs is array(0 to 7) of std_logic_vector(15 downto 0);
 	signal reg_file_q : regs;
-	
-	signal write_en: std_logic_vector(7 downto 0);
-	
 	component reg_file_decoder is
 		port (add: in std_logic_vector(2 downto 0);
 				wr_en: in std_logic;
