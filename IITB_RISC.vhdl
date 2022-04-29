@@ -70,7 +70,7 @@ architecture ViruS of IITB_RISC is
 	
 	-- component Decoder is
 	-- 	 port(
-	-- 		cw: in std_logic_vector(34 downto 0);
+	-- 		cw: in std_logic_vector(35 downto 0);
 	-- 		mem_di_mux: out std_logic;
 	-- 		mem_addr_mux: out std_logic_vector(1 downto 0);
 	-- 		WR_Enable: out std_logic;
