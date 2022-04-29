@@ -1,4 +1,4 @@
-# IITB-RISC-2022
+# Multicycle IITB RISC
 
 ## Contributors
 
