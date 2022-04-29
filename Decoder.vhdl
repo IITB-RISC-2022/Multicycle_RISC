@@ -160,7 +160,7 @@ end architecture;
 
 architecture behav of TBDecoder is
 begin
-    process(x)
+    process(x, en)
     begin
         TB_mux <= x;
         TB_EN <= en;
