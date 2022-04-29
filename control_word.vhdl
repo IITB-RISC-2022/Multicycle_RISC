@@ -43,14 +43,14 @@ begin
 		variable temp_x : std_logic_vector(34 downto 0);
 	begin
 		temp_x := control_bits(to_integer(unsigned(s)));
-		case ir(15 downto 12) is
-			when "0001" =>
-				temp_x(18 downto 17) := "00";
-			when "0010" =>
-				temp_x(18 downto 15) := "1011";
-			when others => 
-				temp_x(18 downto 17) := "00";
-		end case;
+		if s = "00011" then
+			case ir(15 downto 12) is
+				when "0010" =>
+					temp_x(18 downto 15) := "1011";
+				when others =>
+					temp_x(18 downto 17) := "00";
+			end case;
+		end if;
 		X <= temp_x;
 	end process;
 end architecture;
