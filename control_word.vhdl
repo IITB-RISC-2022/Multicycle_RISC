@@ -29,7 +29,7 @@ architecture Behave of control_word is
 												"00000100000000000000000000000000100",
 												"10010000000000000000000010100000000",
 												"00000110000011000110000000010000000",
-												"00000000000010100000011001000000000",
+												"00000000000010000000011001000000000",
 												"00000110000000000000000000000000100",
 												"00000001110110110000011001000000000",
 												"00000001110000000000010111000000000",
@@ -43,14 +43,14 @@ begin
 		variable temp_x : std_logic_vector(34 downto 0);
 	begin
 		temp_x := control_bits(to_integer(unsigned(s)));
-		case ir(15 downto 12) is
-			when "0001" =>
-				temp_x(18 downto 17) := "00";
-			when "0010" =>
-				temp_x(18 downto 17) := "10";
-			when others => 
-				temp_x(18 downto 17) := "00";
-		end case;
+		if s = "00011" then
+			case ir(15 downto 12) is
+				when "0010" =>
+					temp_x(18 downto 15) := "1011";
+				when others =>
+					temp_x(18 downto 17) := "00";
+			end case;
+		end if;
 		X <= temp_x;
 	end process;
 end architecture;
