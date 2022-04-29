@@ -38,13 +38,13 @@ begin
 							NS <= "00011";
 						when "01"=>
 							if (Z_flag = '0') then
-								NS <= "11001";
+								NS <= "00001";
 							else 
 								NS <= "00011";
 							end if;
 						when "10"=>
 							if (C_flag = '0') then
-								NS <= "11001";
+								NS <= "00001";
 							else 
 								NS <= "00011";
 							end if;
@@ -56,14 +56,14 @@ begin
 						when "00"=>
 							NS <= "00011";
 						when "01"=>
-							if (C_flag = '0') then
-							NS <= "11001";
+							if (z_flag = '0') then
+							NS <= "00001";
 							else 
 							NS <= "00011";
 							end if;
 						when "10"=>
-							if (Z_flag = '0') then
-							NS <= "11001";
+							if (c_flag = '0') then
+							NS <= "00001";
 							else 
 							NS <= "00011";	
 							end if;
@@ -96,22 +96,12 @@ begin
 				NS <= "00100";
 			end if;
 		when "00100" =>
-			-- if RF_a3 = "111" then
-			-- 	NS <= "11000";
-			-- else
-			-- 	NS <= "11001";
-			-- end if;
 			NS <= "00001";
 		when "00101" =>
 			NS <= "00100";
 		when "00110" =>
 			NS <= "00100";
 		when "00111" =>
-			-- if RF_a3 = "111" then
-			-- 	NS <= "11010"; --26
-			-- else
-			-- 	NS <= "11001"; --25
-			-- end if;
 			NS <= "00001";
 		when "01000" =>
 			if IR(15 downto 12) = "0111" then
@@ -124,11 +114,6 @@ begin
 		when "01001" =>
 			NS <= "01010";
 		when "01010" =>
-			-- if RF_a3 = "111" then
-			-- 	NS <= "11000";
-			-- else
-			-- 	NS <= "11001";	
-			-- end if;
 			NS <= "00001";
 		when "01011" =>
 			NS <= "00001"; --1
@@ -144,11 +129,6 @@ begin
 			end if;
 		when "01110" =>
 			if TB = "0000000000000000" then
-				-- if RF_a3 = "111" then
-				-- 	NS <= "11000";
-				-- else
-				-- 	NS <= "11001";
-				-- end if;
 				NS <= "00001";
 			else
 				NS <= "01101";
@@ -186,8 +166,6 @@ begin
 		when "10111" =>
 			NS <= "00011";
 		when "11000" =>
-			NS <= "00001";
-		when "11001" =>
 			NS <= "00001";
 		when "11011" =>
 			NS <= "01011";

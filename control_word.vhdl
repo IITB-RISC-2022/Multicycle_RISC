@@ -47,7 +47,7 @@ begin
 			when "0001" =>
 				temp_x(18 downto 17) := "00";
 			when "0010" =>
-				temp_x(18 downto 17) := "10";
+				temp_x(18 downto 15) := "1011";
 			when others => 
 				temp_x(18 downto 17) := "00";
 		end case;
