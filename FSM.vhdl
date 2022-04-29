@@ -55,12 +55,12 @@ architecture beh of FSM is
 	component control_word is 
 		port (s: in std_logic_vector(4 downto 0);
 				ir: in std_logic_vector(15 downto 0);
-				X: out std_logic_vector(34 downto 0));
+				X: out std_logic_vector(35 downto 0));
 	end component;
 
 	component Decoder is
 		 port(
-			cw: in std_logic_vector(34 downto 0);
+			cw: in std_logic_vector(35 downto 0);
 			mem_di_mux: out std_logic;
 			mem_addr_mux: out std_logic_vector(1 downto 0);
 			WR_Enable, RW_Enable: out std_logic;
@@ -86,7 +86,7 @@ architecture beh of FSM is
 		);
 	end component;
 	signal curr_st8, next_st8 : std_logic_vector(4 downto 0);
-	signal cont_word : std_logic_vector(34 downto 0);
+	signal cont_word : std_logic_vector(35 downto 0);
 begin
 	next_state1: next_state port map(curr_state => curr_st8, IR => IR, C_flag =>C_flag, Z_flag => Z_flag, TZ_flag=> TZ_flag, TB => TB, RF_a3 =>RF_a3, NS=>next_st8);
 	control_word1: control_word port map(s => curr_st8, ir => IR, X => cont_word);

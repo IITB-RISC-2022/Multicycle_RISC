@@ -91,7 +91,7 @@ begin
 			end case;
 		when "00011" =>
 			if IR(15 downto 12) = "1011" then
-				NS <= "00001";
+				NS <= "11000";
 			else
 				NS <= "00100";
 			end if;

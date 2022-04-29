@@ -93,6 +93,7 @@ use ieee.numeric_std.all;
 entity TBDecoder is
     port(
     x: in std_logic_vector(1 downto 0);
+	en: in std_logic;
     TB_mux: out std_logic_vector(1 downto 0);
     TB_EN: out std_logic
 	);
@@ -162,7 +163,7 @@ begin
     process(x)
     begin
         TB_mux <= x;
-        TB_EN <= '1';
+        TB_EN <= en;
     end process;
 end architecture;
 
@@ -258,7 +259,7 @@ use ieee.numeric_std.all;
 
 entity Decoder is
     port(
-		cw: in std_logic_vector(34 downto 0);
+		cw: in std_logic_vector(35 downto 0);
 		mem_di_mux: out std_logic;
 		mem_addr_mux: out std_logic_vector(1 downto 0);
 		WR_Enable, RW_Enable: out std_logic;
@@ -348,6 +349,7 @@ architecture behav of Decoder is
 	component TBDecoder is
 		 port(
 		 x: in std_logic_vector(1 downto 0);
+		 en: in std_logic;
 		 TB_mux: out std_logic_vector(1 downto 0);
 		 TB_EN: out std_logic
 		);
@@ -382,7 +384,7 @@ begin
 	 PCD: PCDecoder port map(x => cw(13 downto 11), PC_EN => PC_EN, PC_mux => PC_mux);
 	 R7D: R7Decoder port map(x => cw(10 downto 9), R7_mux => R7_mux, R7_EN => R7_EN);
 	 TAD: TADecoder port map(x => cw(8 downto 6),TA_mux => TA_mux, TA_EN => TA_EN);
-	 TBD: TBDecoder port map(x => cw(5 downto 4),TB_mux => TB_mux, TB_EN => TB_EN);
+	 TBD: TBDecoder port map(x => cw(5 downto 4), en => cw(35), TB_mux => TB_mux, TB_EN => TB_EN);
 	 TCD: TCDecoder port map(x => cw(3 downto 2),TC_mux => TC_mux, TC_EN => TC_EN);
 	 TDD: TDDecoder port map(x => cw(1), TD_EN => TD_EN);
 	 IRD: IRDecoder port map(x => cw(0), IR_EN => IR_EN);
