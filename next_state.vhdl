@@ -79,7 +79,7 @@ begin
 				when "1100" =>
 					NS <= "01100";
 				when "1101" =>
-					NS <= "01101";
+					NS <= "01100";
 				when "1000" =>
 					NS <= "10010";
 				when "1001" =>
@@ -117,31 +117,33 @@ begin
 			NS <= "00001";
 		when "01011" =>
 			NS <= "00001"; --1
-		when "01100" =>
-			NS <= "01101"; --13
-		when "01101" =>
+		when "01100" => -- 12
+			if IR(15 downto 12) = "1100" then
+				NS <= "01101"; --13
+			elsif IR(15 downto 12) = "1101" then
+				NS <= "01111"; -- 15
+			end if;
+		when "01101" => -- 13
 			if IR(15 downto 12) = "1100" then
 				NS <= "01110";
-			elsif IR(15 downto 12) = "1101" then
-				NS <= "01111";
 			else
 				NS <= "00000";
 			end if;
-		when "01110" =>
+		when "01110" => -- 14
 			if TB = "0000000000000000" then
 				NS <= "00001";
 			else
 				NS <= "01101";
 			end if;
-		when "01111" =>
+		when "01111" => -- 15
 			NS <= "10000";
-		when "10000" =>
+		when "10000" => -- 16
 			NS <= "10001";
-		when "10001" =>
+		when "10001" => -- 16
 			if TB = "0000000000000000" then
 				NS <= "00001";
 			else
-				NS <= "01101";
+				NS <= "01111";
 			end if;
 		when "10010" =>
 			if TZ_flag = '1' then 
