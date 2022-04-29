@@ -17,10 +17,10 @@ architecture Behav of FF3 is
 begin
 	process(D,En,CLK)
 	begin
-	if CLK'event and (CLK = '0') then
-		if RST = '1' then
-			Q <= (others =>'0');
-		elsif EN = '1' then
+	if rst = '1' then
+		Q <= (others =>'0');
+	elsif CLK'event and (CLK = '0') then
+		if EN = '1' then
 			Q <= D;
 		end if;
 	end if;
@@ -48,13 +48,13 @@ architecture Behav of FF1 is
 begin
 	process(D,En,CLK)
 	begin
-	if CLK'event and (CLK = '0') then
-		if RST = '1' then
+		if rst = '1' then
 			Q <= '0';
-		elsif EN = '1' then
-			Q <= D;
+		elsif CLK'event and (CLK = '0') then
+			if EN = '1' then
+				Q <= D;
+			end if;
 		end if;
-	end if;
 	end process;
 
 end architecture;
@@ -79,13 +79,13 @@ architecture Behav of FF16 is
 begin
 	process(D,En,CLK)
 	begin
-	if CLK'event and (CLK = '0') then
-		if RST = '1' then
+		if rst = '1' then
 			Q <= (others =>'0');
-		elsif EN = '1' then
-			Q <= D;
+		elsif CLK'event and (CLK = '0') then
+			if EN = '1' then
+				Q <= D;
+			end if;
 		end if;
-	end if;
 	end process;
 
 end architecture;

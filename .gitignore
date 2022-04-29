@@ -5,4 +5,4 @@ __*.txt
 TRACEFILE-*.txt
 *.cf
 # compile.sh
-# *.ghw
+*.ghw

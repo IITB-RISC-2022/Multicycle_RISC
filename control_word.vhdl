@@ -4,14 +4,15 @@ use ieee.numeric_std.all;
 
 entity control_word is 
 	port (s: in std_logic_vector(4 downto 0);
+			ir: in std_logic_vector(15 downto 0);
 			X: out std_logic_vector(34 downto 0));
 end entity;
 
 architecture Behave of control_word is
-	type bits is array(0 to 26) of std_logic_vector(34 downto 0);
-	signal control_bits : bits :=  ("00000000000000000000000000000000000",
+	type bits is array(0 to 27) of std_logic_vector(34 downto 0);
+	signal control_bits : bits :=  (			"00000000000000000000000000000000000",
 												"00101000000000000000110000000000001",
-											   "00000010000000000000000000010010000",
+											    "00000010000000000000000000010010000",
 												"00000000000011000001000000011000000",
 												"00000001001000000000000000000000000",
 												"00000000000010000001000000011000000",
@@ -35,7 +36,21 @@ architecture Behave of control_word is
 												"00000010000000000000000000010110000",
 												"00000000000000000000000100000000000",
 												"00000000000000000000000010000000000",
-												"00000000000000000000001000000000000");
+												"00000000000000000000001000000000000",
+												"00000000000100000000000000000000000");
 begin
-	X <= control_bits(to_integer(unsigned(s)));
+	process(s, ir)
+		variable temp_x : std_logic_vector(34 downto 0);
+	begin
+		temp_x := control_bits(to_integer(unsigned(s)));
+		case ir(15 downto 12) is
+			when "0001" =>
+				temp_x(18 downto 17) := "00";
+			when "0010" =>
+				temp_x(18 downto 17) := "10";
+			when others => 
+				temp_x(18 downto 17) := "00";
+		end case;
+		X <= temp_x;
+	end process;
 end architecture;

@@ -162,7 +162,7 @@ begin
     process(x)
     begin
         TB_mux <= x;
-        TB_EN <= x(0) or x(1);
+        TB_EN <= '1';
     end process;
 end architecture;
 

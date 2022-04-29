@@ -54,14 +54,17 @@ architecture Complicated of DATAPATH is
 	
 	component REG_FILE is
 		port(CLK, RST : in std_logic;
-			  WR_EN, r7_en : in std_logic;
+			  WR_EN : in std_logic;
 			  RF_A1 : in std_logic_vector(2 downto 0);
 			  RF_A2 : in std_logic_vector(2 downto 0);
 			  RF_A3 : in std_logic_vector(2 downto 0);
 			  RF_D3 : in std_logic_vector(15 downto 0);
-			  R7_IN : in std_logic_vector(15 downto 0);
 			  RF_D1 : out std_logic_vector(15 downto 0);
-			  RF_D2 : out std_logic_vector(15 downto 0));
+			  RF_D2 : out std_logic_vector(15 downto 0);
+			  PC_D : in std_logic_vector(15 downto 0); 
+			  PC_EN : in std_logic;
+			  PC_Q : out std_logic_vector(15 downto 0)
+			  );
 	end component;
 	
 	component MEMORY is
@@ -193,20 +196,21 @@ begin
 	REGISTER_FILE : REG_FILE port map(CLK => CLK, 
 												 RST => RST, 
 												 WR_EN => reg_wr_en, 
-												 r7_en => r7_en, 
 												 RF_A1 => rf_a1_in, 
-												 RF_A2 => IR_out(8 downto 6), --
+												 RF_A2 => IR_out(8 downto 6),
 												 RF_A3 => rf_a3_in, 
 												 RF_D3 => rf_d3_in, 
-												 R7_IN => R7_IN,
 												 RF_D1 =>rf_d1_out, 
-												 RF_D2=> rf_d2_out);
+												 RF_D2=> rf_d2_out,
+												 PC_D => PC_in,
+												 PC_EN=> PC_EN, 
+												 PC_Q=>PC_out 
+												 );
 	
 	IR : FF16 port map(D => mem_data_out, EN=> IR_EN, RST=> RST, CLK=>CLK, Q=>IR_out );
 	TB : FF16 port map(D => TB_in,EN=> TB_EN, RST=> RST, CLK=>CLK, Q=>TB_out );
 	TA : FF16 port map(D => TA_in,EN=> TA_EN, RST=> RST, CLK=>CLK, Q=>TA_out );
 	TC : FF16 port map(D => TC_in,EN=> TC_EN, RST=> RST, CLK=>CLK, Q=>TC_out );
-	PC : FF16 port map(D => PC_in,EN=> PC_EN, RST=> RST, CLK=>CLK, Q=>PC_out );
 	
 	TD : FF3 port map(D => TD_in,EN=> TD_EN, RST=> RST, CLK=>CLK, Q=>TD_out );
 	
@@ -218,10 +222,10 @@ begin
 	LS1: LShifter1 port map(inp =>TB_out, outp =>LS1_outp);
 	LS7: LShifter7 port map(inp =>IR_out(8 downto 0), outp =>LS7_outp);
 	
-	mux1: mux_4x1_3bit port map(inp_1 => IR_out(11 downto 9),inp_2 =>TD_out, inp_3 =>"111",inp_4=>"000", sel=> rf_a1_mux, outp=>rf_a1_in);
+	mux1: mux_4x1_3bit port map(inp_1=>"000",inp_2 => IR_out(11 downto 9),inp_3 =>TD_out, inp_4 =>"111", sel=> rf_a1_mux, outp=>rf_a1_in);
 	mux2: mux_4x1_3bit port map(inp_1 => IR_out(8 downto 6),inp_2 =>TD_out, inp_3 =>IR_out(5 downto 3), inp_4=>IR_out(11 downto 9), sel=> rf_a3_mux, outp=>rf_a3_in);
-	mux3: mux_4x1_16bit port map(inp_1 => LS7_outp,inp_2 =>TA_out, inp_3 =>TC_out,inp_4=>(others => '0'), sel=> rf_d3_mux, outp=>rf_d3_in);
-	mux4: mux_4x1_16bit port map(inp_1 => (others => '0'), inp_2 => rf_d2_out, inp_3 =>PE_out, inp_4 =>se9_outp, sel=> tb_mux, outp=>TB_in);
+	mux3: mux_4x1_16bit port map(inp_1 =>(others => '0'), inp_2 =>TA_out, inp_3 =>TC_out, inp_4 => LS7_outp, sel=> rf_d3_mux, outp=>rf_d3_in);
+	mux4: mux_4x1_16bit port map(inp_1 => alu_y_out, inp_2 => rf_d2_out, inp_3 =>PE_out, inp_4 =>se9_outp, sel=> tb_mux, outp=>TB_in);
 	mux5: mux_4x1_16bit port map(inp_1 => mem_data_out,inp_2 =>rf_d1_out, inp_3 =>alu_y_out,inp_4=>alu_x_out, sel=> ta_mux, outp=>TA_in);
 	mux6: mux_2x1_16bit port map(inp_1 => rf_d1_out, inp_2 => mem_data_out, outp => TC_in, sel =>tc_mux);
 	mux7: mux_4x1_16bit port map(inp_1 => alu_y_out, inp_2 => PC_out, inp_3 => TB_out,inp_4 => (others => '0'),outp => R7_in, sel => R7_mux);
