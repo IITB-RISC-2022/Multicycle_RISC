@@ -17,8 +17,9 @@ architecture behav of MEMORY is
 		0 => "0111000000001010", -- lw r0, r0, 10
 	 	1 => "0111001001001011", -- lw r1, r1, 11
 		2 => "0000101000001011", -- lhi r5, 11 
-		3 => "0101101001000001", -- sw r5, r1, 1 
-		10 => "0000000000000010",
+		3 => "0010000001010000", -- ndu r0, r1, r2
+		-- 4 => "0101101001000001", -- sw r5, r1, 1 
+		10 => "0000000000000011", 
 		11 => "0000000000000001", 
 		others=>(others=>'1'));
 	-- signal RAM: vec_array:= (others=>b"0000000000000000");
@@ -35,7 +36,11 @@ begin
 	end if;
 	
 	if RW_Enable = '1' then
-		out_t := RAM(to_integer(unsigned(ADDR)));
+		if to_integer(unsigned(ADDR)) < 15 then
+			out_t := RAM(to_integer(unsigned(ADDR)));
+		else
+			out_t := (others => '0');
+		end if;
 	end if;
 	outp <= out_t;
 	end process;
