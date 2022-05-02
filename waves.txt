@@ -1,0 +1,144 @@
+ADD:
+    add r2, r0, r1
+
+    Debug:
+    r0 = 0x0002
+    r1 = 0x0010
+    Result: r2 = 0x0012
+
+
+ADC(Carry Set):
+    add r2, r0, r1
+    adc r2, r2, r0, r2
+    Debug:
+    r0 = 0x8002
+    r1 = 0x8010
+    Result: r2 = 0x8014
+
+ADC(Carry Not Set):
+    add r2, r0, r1
+    adc r2, r2, r0, r2
+    Debug:
+    r0 = 0x8002
+    r1 = 0x0010
+    Result: r2 = 0x8012
+
+ADZ(Zero Set):
+    add r3, r0, r1
+    adz r2, r0, r0, r2
+    Debug:
+    r0 = 0x0000
+    r1 = 0x0000
+    r2 = 0x0001
+    Result: r1 = 0x0001, r2 = 0x0001
+ADZ(Zero Not Set):
+    add r3, r0, r1
+    adz r2, r0, r0, r2
+    Debug:
+    r0 = 0x0000
+    r1 = 0x0001
+    r2 = 0x0001
+    Result: r1 = 0x0001, r2 = 0x0001
+NDU(Nand):
+    ndu r2, r0, r1
+    Debug:
+    r0 = 0x8000
+    r1 = 0x8001
+    r2 = 0x0001
+    Result: r2 = 0x7FFF
+LHI:
+    LHI r0, #111100000B
+    Debug:
+    r0 = 0x8000
+    Result: r0 = 0xF000
+LM:
+    LM r0, #00000011B
+    Debug:
+    Mem(0x0002) = 0x748C
+    Mem(0x0003) = 0x7900
+    r0 = 0x0002
+    r1 = 0x8001
+    Result:
+R0 = 0x748C
+R1 = 0x7900
+SM:
+    SM r0, #00000011B
+    Debug:
+    r0 = 0x0005
+    r1 = 0x0001
+    Result:
+    	Mem(0x0005) = 0x0005
+    	Mem(0x0006) = 0x0001
+ 
+BEQ(Branch)
+    4: BEQ r0, r1, #0x03H
+    5: add r0, r0, r0
+    6: …
+    7: add r1, r0, r0
+
+    Debug:
+    R0 = 0x0005H
+    R1 = 0x0005H
+    PC/R7 = 0x0004H
+    Result:
+	R0 = 0x0005H
+	R1 = 0x000AH
+	PC does Branch  4-> (4 + 3) -> 7
+
+BEQ(No Branch)
+    4: BEQ r0, r1, #0x03H
+    5: add r0, r0, r0
+    6: …
+
+    Debug:
+    R0 = 0x0005H
+    R1 = 0x0001H
+    PC/R7 = 0x0004H
+    Result:
+	R0 = 0x000AH
+	PC does not Branch
+
+JAL:
+    4: JAL r0,  #0x03H
+    5: add r0, r0, r1
+    6: …
+    7: add r1, r0, r0
+
+    Debug:
+    R0 = 0x0000H
+    R1 = 0x0005H
+    PC/R7 = 0x0004H
+    Result:
+	R0 = 0x0005H
+	R1 = 0x000AH
+	PC does Branch  4-> (4 + 3) -> 7 and (4+1) -> R0
+
+JLR:
+    4: JLR r0, r1
+    5: add r0, r0, r1
+    6: …
+    7: add r1, r0, r0
+
+    Debug:
+    R0 = 0x0000H
+    R1 = 0x0007H
+    PC/R7 = 0x0004H
+    Result:
+	R0 = 0x0005H
+	R1 = 0x0007H
+	PC does Branch  4-> (r1)= 7 and (4+1) -> R0
+
+JRI:
+    4: JRI r0, #0x03H
+    5: add r0, r0, r1
+    6: …
+    7: add r1, r0, r0
+
+    Debug:
+    R0 = 0x0005H
+    R1 = 0x0007H
+    PC/R7 = 0x0004H
+    Result:
+	R0 = 0x0005H
+	R1 = 0x0007H
+	PC does Branch  4-> (r1+0x0002)= 7

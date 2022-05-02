@@ -7,9 +7,9 @@ entity DATAPATH is
 	CLK, RST :in std_logic;
 	ALU_OP : in std_logic_vector(1 downto 0);
 	IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TZ_EN, TD_EN : in std_logic;
-	R7_en, REG_WR_EN, mem_wr_en, mem_rw_en : in std_logic;
+	REG_WR_EN, mem_wr_en, mem_rw_en : in std_logic;
 	rf_a1_mux, rf_a3_mux, rf_d3_mux: in std_logic_vector(1 downto 0);
-	ta_mux, tb_mux, r7_mux: in std_logic_vector(1 downto 0);
+	ta_mux, tb_mux: in std_logic_vector(1 downto 0);
 	tc_mux: in std_logic;
 	mem_addr_mux: in std_logic_vector(1 downto 0);
 	mem_di_mux: in std_logic;
@@ -175,7 +175,7 @@ architecture Complicated of DATAPATH is
 	signal rf_d3_in, rf_d1_out, rf_d2_out: std_logic_vector(15 downto 0);
 	signal rf_a1_in, rf_a3_in: std_logic_vector(2 downto 0);
 	
-	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TC_out, PC_in, PC_out, PE_out, R7_in: std_logic_vector(15 downto 0);
+	signal IR_in, IR_out, TA_in, TA_out, TB_in, TB_out, TC_in, TC_out, PC_in, PC_out, PE_out: std_logic_vector(15 downto 0);
 	signal se6_outp, se9_outp, LS7_outp, LS1_outp : std_logic_vector(15 downto 0);
 	signal TD_in, TD_out: std_logic_vector(2 downto 0);
 begin
@@ -228,7 +228,7 @@ begin
 	mux4: mux_4x1_16bit port map(inp_1 => alu_y_out, inp_2 => rf_d2_out, inp_3 =>PE_out, inp_4 =>se9_outp, sel=> tb_mux, outp=>TB_in);
 	mux5: mux_4x1_16bit port map(inp_1 => mem_data_out,inp_2 =>rf_d1_out, inp_3 =>alu_y_out,inp_4=>alu_x_out, sel=> ta_mux, outp=>TA_in);
 	mux6: mux_2x1_16bit port map(inp_1 => rf_d1_out, inp_2 => mem_data_out, outp => TC_in, sel =>tc_mux);
-	mux7: mux_4x1_16bit port map(inp_1 => alu_y_out, inp_2 => PC_out, inp_3 => TB_out,inp_4 => (others => '0'),outp => R7_in, sel => R7_mux);
+	
 	mux8: mux_4x1_16bit port map(inp_1 => TA_out, inp_2 => PC_out, inp_3 => TB_out, inp_4 => (others =>'0'), outp => mem_addr_in, sel => mem_addr_mux);
 	mux9: mux_2x1_16bit port map(inp_1 => TA_out, inp_2 => TC_out, outp => mem_data_in, sel => mem_di_mux);
 	mux10: mux_8x1_16bit port map(inp_1 => se6_outp, inp_2 => LS1_outp, inp_3 => se9_outp, inp_4 => TC_out,
