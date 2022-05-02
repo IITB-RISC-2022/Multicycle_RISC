@@ -65,18 +65,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity R7Decoder is
-    port(
-    x: in std_logic_vector(1 downto 0);
-    R7_mux: out std_logic_vector(1 downto 0);
-    R7_EN: out std_logic
-	);
-end entity;
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
 entity TADecoder is
     port(
     x: in std_logic_vector(2 downto 0);
@@ -194,15 +182,6 @@ begin
     end process;
 end architecture;
 
-architecture behav of R7Decoder is
-begin
-    process(x)
-    begin
-        R7_mux <= x(1 downto 0);
-        R7_EN <= (x(0) or x(1) );
-    end process;
-end architecture;
-
 architecture behav of PCDecoder is
 begin
     process(x)
@@ -259,7 +238,7 @@ use ieee.numeric_std.all;
 
 entity Decoder is
     port(
-		cw: in std_logic_vector(35 downto 0);
+		cw: in std_logic_vector(33 downto 0);
 		mem_di_mux: out std_logic;
 		mem_addr_mux: out std_logic_vector(1 downto 0);
 		WR_Enable, RW_Enable: out std_logic;
@@ -272,8 +251,6 @@ entity Decoder is
 		alu_x_a_mux: out std_logic;
 		PC_mux: out std_logic_vector(2 downto 0);
 		PC_EN: out std_logic;
-		R7_mux: out std_logic_vector(1 downto 0);
-		R7_EN: out std_logic;
 		TA_mux: out std_logic_vector(1 downto 0);
 		TA_EN: out std_logic;
 		TB_mux: out std_logic_vector(1 downto 0);
@@ -330,14 +307,6 @@ architecture behav of Decoder is
 		);
 	end component;
 	
-	component R7Decoder is
-		 port(
-		 x: in std_logic_vector(1 downto 0);
-		 R7_mux: out std_logic_vector(1 downto 0);
-		 R7_EN: out std_logic
-		 );
-	end component;
-
 	component TADecoder is
 		 port(
 		 x: in std_logic_vector(2 downto 0);
@@ -377,14 +346,13 @@ architecture behav of Decoder is
 		);
 	end component;
 begin
-    MD: MemoryDecoder port map(x => cw(34 downto 30), mem_di_mux => mem_di_mux, mem_addr_mux => mem_addr_mux, WR_Enable => WR_Enable, RW_Enable => RW_Enable );
-	 RF: RFDecoder port map(x => cw(29 downto 24), rf_a1_mux => rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux => rf_d3_mux, reg_wr_en => reg_wr_en);
-	 AYD: AluyDecoder port map(x => cw(23 downto 15), alu_y_a_mux => alu_y_a_mux, alu_y_b_mux => alu_y_b_mux, ALU_OP => ALU_OP, C_EN => C_EN, Z_EN => Z_EN, TZ_EN => TZ_EN);
-	 AXD: AluxDecoder port map(x => cw(14), alu_x_a_mux => alu_x_a_mux);
-	 PCD: PCDecoder port map(x => cw(13 downto 11), PC_EN => PC_EN, PC_mux => PC_mux);
-	 R7D: R7Decoder port map(x => cw(10 downto 9), R7_mux => R7_mux, R7_EN => R7_EN);
+    MD: MemoryDecoder port map(x => cw(32 downto 28), mem_di_mux => mem_di_mux, mem_addr_mux => mem_addr_mux, WR_Enable => WR_Enable, RW_Enable => RW_Enable );
+	 RF: RFDecoder port map(x => cw(27 downto 22), rf_a1_mux => rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux => rf_d3_mux, reg_wr_en => reg_wr_en);
+	 AYD: AluyDecoder port map(x => cw(21 downto 13), alu_y_a_mux => alu_y_a_mux, alu_y_b_mux => alu_y_b_mux, ALU_OP => ALU_OP, C_EN => C_EN, Z_EN => Z_EN, TZ_EN => TZ_EN);
+	 AXD: AluxDecoder port map(x => cw(12), alu_x_a_mux => alu_x_a_mux);
+	 PCD: PCDecoder port map(x => cw(11 downto 9), PC_EN => PC_EN, PC_mux => PC_mux);
 	 TAD: TADecoder port map(x => cw(8 downto 6),TA_mux => TA_mux, TA_EN => TA_EN);
-	 TBD: TBDecoder port map(x => cw(5 downto 4), en => cw(35), TB_mux => TB_mux, TB_EN => TB_EN);
+	 TBD: TBDecoder port map(x => cw(5 downto 4), en => cw(33), TB_mux => TB_mux, TB_EN => TB_EN);
 	 TCD: TCDecoder port map(x => cw(3 downto 2),TC_mux => TC_mux, TC_EN => TC_EN);
 	 TDD: TDDecoder port map(x => cw(1), TD_EN => TD_EN);
 	 IRD: IRDecoder port map(x => cw(0), IR_EN => IR_EN);
