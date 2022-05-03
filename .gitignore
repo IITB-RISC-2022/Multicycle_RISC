@@ -6,3 +6,4 @@ TRACEFILE-*.txt
 *.cf
 # compile.sh
 *.ghw
+.DS_Store
