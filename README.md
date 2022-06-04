@@ -1,6 +1,10 @@
 # Multicycle IITB RISC
 
-## Contributors
+## Course Project
+
+## EE 309 - Microprocessors
+
+### Contributors
 
 - Rohan Kalbag
 - Jujhaar Singh
