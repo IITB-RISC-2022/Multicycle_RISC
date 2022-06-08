@@ -1,7 +1,6 @@
 #!/bin/zsh
 
-echo "Hi"
-
+echo "Starting Compilation"
 setopt aliases
 ghdl -a muxes.vhdl
 ghdl -a ALU.vhdl
@@ -64,4 +63,4 @@ ghdl -e DUT
 ghdl -a Testbench.vhdl
 ghdl -e Testbench
 
-echo "End"
+echo "Compiled Successfully"

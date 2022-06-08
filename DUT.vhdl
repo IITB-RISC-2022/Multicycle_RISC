@@ -1,3 +1,4 @@
+-- IITB-RISC-2022
 -- A DUT entity is used to wrap your design.
 --  This example shows how you can do this for the
 --  Full-adder.
