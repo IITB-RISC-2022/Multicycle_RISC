@@ -12,22 +12,22 @@ shifters Lshifter7 and Lshifter1 which respectively shift the input by 7 and 1 b
 temporary registers TA, TB, TC, TD, where TA, TB and TC are 16 bit and TD
 is 3 bit.
 The information regarding the **27** states of the FSM can be
-found in the file (FSM States)[https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/FSM%20States.pdf] and the state transition flows of the Finite
-State Machine can be found in the file (State Transition Diagram)[https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/State%20Transition%20Diagram.pdf]. The
-control decode logic for each instruction can be found in the file (Decoding Logic)[https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Decoding%20Logic.pdf].
-The control words for each of the states can be found in the file (Control Words)[https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Control%20Words.pdf]
+found in the file [FSM States](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/FSM%20States.pdf) and the state transition flows of the Finite
+State Machine can be found in the file [State Transition Diagram](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/State%20Transition%20Diagram.pdf). The
+control decode logic for each instruction can be found in the file [Decoding Logic](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Decoding%20Logic.pdf).
+The control words for each of the states can be found in the file [Control Words](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Control%20Words.pdf).
 
 
 ### This repository consists of all the Hardware Descriptions in **VHDL** required for simulating each instruction using a waveform analyzer
 
 
 ## Instruction Set Architecture
-Information for the **17** instructions supported by the **IITB-RISC-22**, their encoding can be found in the (Problem Statement)[https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Multicycle%20Problem%20Statement.pdf].
+Information for the **17** instructions supported by the **IITB-RISC-22**, their encoding can be found in the [Problem Statement](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Multicycle%20Problem%20Statement.pdf).
 
 
 ## Software Requirements
-- `(GHDL)[https://github.com/ghdl/ghdl]`
-- `(GTKWave)[http://gtkwave.sourceforge.net/]`
+- [GHDL](https://github.com/ghdl/ghdl)
+- [GTKWave](http://gtkwave.sourceforge.net/)
 
 
 ## Guidelines on Microprocessor Programming 
@@ -44,6 +44,11 @@ Information for the **17** instructions supported by the **IITB-RISC-22**, their
 - After VHDL compiles with no error. Use following command to run simulation `ghdl -r testbench --wave=waveform.ghw`
 - Open `./waveform.ghw` with GTKWave
 > Waveform files contain the data/signal plot of all the internal signals and ports for each entity instance as a function of time
+
+
+## Preliminary Testing
+- The instructions listed in `waves.txt` were run by placing them in memory and the waveforms were captured and placed in the folder `./Instructions Waveforms.`
+
 
 ### Contributors
 
