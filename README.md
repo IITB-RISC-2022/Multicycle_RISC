@@ -6,7 +6,7 @@
 *The detailed schematic can be found [here](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Datapath.pdf)*
 
 
-## Description
+## Architecture
 
 
 The **IITB-RISC-22** is a **16-bit** computer system which performs **17** instructions with **8** general purpose registers (R0 to R7). The architecture also has a carry flag and a zero flag, two 16 bit ALUs, one 16 bit priority encoder that
@@ -52,7 +52,7 @@ Information for the **17** instructions supported by the **IITB-RISC-22**, their
 
 
 ## Preliminary Testing
-- The instructions listed in `waves.txt` were run by placing them in memory and the waveforms were captured and placed in the folder `./Instructions Waveforms.`
+- The instructions listed in [waves.txt](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/waves.txt) were run by placing them in memory and the waveforms were captured and placed in the folder [Instructions Waveforms](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/tree/master/Instruction%20Waveforms)
 
 
 ### Contributors
