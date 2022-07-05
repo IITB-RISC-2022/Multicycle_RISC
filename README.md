@@ -1,4 +1,4 @@
-# Multicycle RISC Microprocessor
+# Multicycle Reduced Instruction Set Computer
 
 
 ## Datapath
