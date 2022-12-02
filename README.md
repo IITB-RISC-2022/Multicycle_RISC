@@ -1,6 +1,9 @@
 # Multicycle Reduced Instruction Set Computer
 
 
+## Course Project - EE 309 - Microprocessors
+> *Course Instructor - Prof. Virendra Singh*
+
 ## Datapath
 ![Datapath](https://user-images.githubusercontent.com/46604893/172542384-4dd88abb-9760-4340-b88e-ed07ac8a7b4d.jpg)
 *The detailed schematic can be found [here](https://github.com/rohankalbag/Multicycle-RISC-Microprocessor/blob/master/Documentation/Datapath.pdf)*
