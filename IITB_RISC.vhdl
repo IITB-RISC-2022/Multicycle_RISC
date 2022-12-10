@@ -4,7 +4,7 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY IITB_RISC IS
-	PORT (CLK, RST : IN STD_LOGIC);
+	PORT (CLK, RST, BOOT: IN STD_LOGIC);
 END ENTITY;
 
 ARCHITECTURE arch OF IITB_RISC IS
@@ -46,7 +46,7 @@ ARCHITECTURE arch OF IITB_RISC IS
 
 	COMPONENT DATAPATH IS
 		PORT (
-			CLK, RST : IN STD_LOGIC;
+			CLK, RST, BOOT : IN STD_LOGIC;
 			ALU_OP : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
 			IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TZ_EN, TD_EN : IN STD_LOGIC;
 			REG_WR_EN, mem_wr_en, mem_rw_en : IN STD_LOGIC;
@@ -108,7 +108,7 @@ BEGIN
 		mem_di_mux => mem_di_mux_sig, alu_x_a_mux => alu_x_a_mux_sig, alu_y_a_mux => alu_y_a_mux_sig, alu_y_b_mux => alu_y_b_mux_sig,
 		PC_mux => PC_mux_sig);
 	datapath1 : DATAPATH PORT MAP(
-		CLK => CLK, RST => RST,
+		BOOT => BOOT, CLK => CLK, RST => RST,
 		ALU_OP => ALU_op_sig,
 		IR_EN => IR_EN_sig, TA_EN => TA_EN_sig, TB_EN => Tb_EN_sig, TC_EN => Tc_EN_sig, PC_EN => pc_EN_sig, C_EN => c_EN_sig, Z_EN => z_EN_sig, TZ_EN => Tz_EN_sig, TD_EN => Td_EN_sig,
 		REG_WR_EN => REG_WR_EN_sig, mem_wr_en => mem_WR_EN_sig, mem_rw_en => mem_RW_EN_sig,

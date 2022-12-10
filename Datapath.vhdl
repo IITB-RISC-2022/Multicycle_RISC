@@ -5,7 +5,7 @@ USE ieee.numeric_std.ALL;
 
 ENTITY DATAPATH IS
 	PORT (
-		CLK, RST : IN STD_LOGIC;
+		CLK, RST, BOOT : IN STD_LOGIC;
 		ALU_OP : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
 		IR_EN, TA_EN, TB_EN, TC_EN, PC_EN, C_EN, Z_EN, TZ_EN, TD_EN : IN STD_LOGIC;
 		REG_WR_EN, mem_wr_en, mem_rw_en : IN STD_LOGIC;
@@ -73,6 +73,7 @@ ARCHITECTURE Complicated OF DATAPATH IS
 	COMPONENT MEMORY IS
 		PORT (
 			CLK, WR_Enable, RW_Enable : IN STD_LOGIC;
+			BOOT : IN STD_LOGIC;
 			ADDR : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			DATA : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			OUTP : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
@@ -193,7 +194,7 @@ BEGIN
 		alu_op => "00", inp_a => alu_x_a, --
 		inp_b => one_16_bit, out_c => alu_x_c, out_z => alu_x_z, alu_out => alu_x_out);
 
-	RAM : MEMORY PORT MAP(CLK => CLK, WR_Enable => mem_wr_en, RW_Enable => mem_rw_en, ADDR => mem_addr_in, DATA => mem_data_in, OUTP => mem_data_out);
+	RAM : MEMORY PORT MAP(BOOT => BOOT, CLK => CLK, WR_Enable => mem_wr_en, RW_Enable => mem_rw_en, ADDR => mem_addr_in, DATA => mem_data_in, OUTP => mem_data_out);
 
 	REGISTER_FILE : REG_FILE PORT MAP(
 		CLK => CLK,

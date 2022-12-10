@@ -12,15 +12,18 @@ END ENTITY;
 ARCHITECTURE DutWrap OF tb IS
 
 	COMPONENT IITB_RISC IS
-		PORT (CLK, RST : IN STD_LOGIC);
+		PORT (CLK, RST, BOOT : IN STD_LOGIC);
 	END COMPONENT IITB_RISC;
 
 	SIGNAL CLK : STD_LOGIC;
 	SIGNAL RST : STD_LOGIC;
+	SIGNAL BOOT: STD_LOGIC;
 
 BEGIN
 	simulate : PROCESS
 	BEGIN
+		
+		BOOT <= '1';
 		CLK <= '0';
 		RST <= '1';
 		WAIT FOR 10 ns;
@@ -31,9 +34,10 @@ BEGIN
 
 		CLK <= '0';
 		RST <= '0';
+		BOOT <= '0';
 		WAIT FOR 10 ns;
 
-		FOR i IN 0 TO 50 LOOP
+		FOR i IN 0 TO 100 LOOP
 			CLK <= NOT CLK;
 			WAIT FOR 10 ns;
 		END LOOP;
@@ -43,7 +47,8 @@ BEGIN
 	proc : IITB_RISC
 	PORT MAP(
 		CLK => CLK,
-		RST => RST
+		RST => RST,
+		BOOT => BOOT
 	);
 
 END DutWrap;
