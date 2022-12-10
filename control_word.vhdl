@@ -1,17 +1,18 @@
 -- IITB-RISC-2022
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity control_word is 
-	port (s: in std_logic_vector(4 downto 0);
-			ir: in std_logic_vector(15 downto 0);
-			X: out std_logic_vector(33 downto 0));
-end entity;
+ENTITY control_word IS
+	PORT (
+		s : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+		ir : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		X : OUT STD_LOGIC_VECTOR(33 DOWNTO 0));
+END ENTITY;
 
-architecture Behave of control_word is
-	type bits is array(0 to 27) of std_logic_vector(33 downto 0);
-	signal control_bits : bits :=  (	"0000000000000000000000000000000000",
+ARCHITECTURE Behave OF control_word IS
+	TYPE bits IS ARRAY(0 TO 27) OF STD_LOGIC_VECTOR(33 DOWNTO 0);
+	SIGNAL control_bits : bits := ("0000000000000000000000000000000000",
 	"0001010000000000000001100000000001",
 	"1000000100000000000000000010010000",
 	"0000000000000110000010000011000000",
@@ -39,30 +40,30 @@ architecture Behave of control_word is
 	"0000000000000000000000000000000000",
 	"0000000000000000000000010000000000",
 	"1000000000001000000000000000000000");
-begin
-	process(s, ir)
-		variable temp_x : std_logic_vector(33 downto 0);
-	begin
+BEGIN
+	PROCESS (s, ir)
+		VARIABLE temp_x : STD_LOGIC_VECTOR(33 DOWNTO 0);
+	BEGIN
 		temp_x := control_bits(to_integer(unsigned(s)));
-		if s = "00011" then
-			case ir(15 downto 12) is
-				when "0010" =>
-					temp_x(16 downto 13) := "1011";
-				when others =>
-					temp_x(16 downto 15) := "00";
-			end case;
-		end if;
+		IF s = "00011" THEN
+			CASE ir(15 DOWNTO 12) IS
+				WHEN "0010" =>
+					temp_x(16 DOWNTO 13) := "1011";
+				WHEN OTHERS =>
+					temp_x(16 DOWNTO 15) := "00";
+			END CASE;
+		END IF;
 
-		if s = "10011" or s = "10101" then
-			case ir(15 downto 12) is
-				when "1000" =>
-					temp_x(16 downto 13) := "1100";
-				when "1001" =>
-					temp_x(16 downto 13) := "1100";
-				when others =>
-					temp_x(16 downto 15) := "00";
-			end case;
-		end if;
+		IF s = "10011" OR s = "10101" THEN
+			CASE ir(15 DOWNTO 12) IS
+				WHEN "1000" =>
+					temp_x(16 DOWNTO 13) := "1100";
+				WHEN "1001" =>
+					temp_x(16 DOWNTO 13) := "1100";
+				WHEN OTHERS =>
+					temp_x(16 DOWNTO 15) := "00";
+			END CASE;
+		END IF;
 		X <= temp_x;
-	end process;
-end architecture;
+	END PROCESS;
+END ARCHITECTURE;

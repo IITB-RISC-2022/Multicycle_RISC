@@ -2,7 +2,6 @@ IITB-RISC-2022
 
 ADD:
     add r2, r0, r1
-
     Debug:
     r0 = 0x0002
     r1 = 0x0010
@@ -33,6 +32,7 @@ ADZ(Zero Set):
     r1 = 0x0000
     r2 = 0x0001
     Result: r1 = 0x0001, r2 = 0x0001
+
 ADZ(Zero Not Set):
     add r3, r0, r1
     adz r2, r0, r0, r2
@@ -41,6 +41,7 @@ ADZ(Zero Not Set):
     r1 = 0x0001
     r2 = 0x0001
     Result: r1 = 0x0001, r2 = 0x0001
+
 NDU(Nand):
     ndu r2, r0, r1
     Debug:
@@ -48,6 +49,7 @@ NDU(Nand):
     r1 = 0x8001
     r2 = 0x0001
     Result: r2 = 0x7FFF
+
 LHI:
     LHI r0, #111100000B
     Debug:
@@ -61,8 +63,9 @@ LM:
     r0 = 0x0002
     r1 = 0x8001
     Result:
-R0 = 0x748C
-R1 = 0x7900
+    R0 = 0x748C
+    R1 = 0x7900
+
 SM:
     SM r0, #00000011B
     Debug:

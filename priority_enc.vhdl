@@ -1,23 +1,23 @@
 -- IITB-RISC-2022
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity PRIORITY_ENC is
-		port(
-		inp: in std_logic_vector(15 downto 0);
-		outp: out std_logic_vector(15 downto 0);
-		out_enc: out std_logic_vector(2 downto 0)
-		);
-end entity;
+ENTITY PRIORITY_ENC IS
+	PORT (
+		inp : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		outp : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		out_enc : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+	);
+END ENTITY;
 
-architecture Behav of PRIORITY_ENC is
-	signal temp_out, diff : std_logic_vector(15 downto 0);
-begin
-	temp_out <= std_logic_vector(unsigned(inp)-1) and inp;
-	diff <= std_logic_vector(unsigned(inp)-unsigned(temp_out));
+ARCHITECTURE Behav OF PRIORITY_ENC IS
+	SIGNAL temp_out, diff : STD_LOGIC_VECTOR(15 DOWNTO 0);
+BEGIN
+	temp_out <= STD_LOGIC_VECTOR(unsigned(inp) - 1) AND inp;
+	diff <= STD_LOGIC_VECTOR(unsigned(inp) - unsigned(temp_out));
 	outp <= temp_out;
-	out_enc(2) <= diff(7) or diff(6) or diff(5) or diff(4);
-	out_enc(1) <= diff(2) or diff(3) or diff(6) or diff(7);
-	out_enc(0) <= diff(1) or diff(3) or diff(5) or diff(7);
-end architecture;
+	out_enc(2) <= diff(7) OR diff(6) OR diff(5) OR diff(4);
+	out_enc(1) <= diff(2) OR diff(3) OR diff(6) OR diff(7);
+	out_enc(0) <= diff(1) OR diff(3) OR diff(5) OR diff(7);
+END ARCHITECTURE;

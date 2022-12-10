@@ -1,361 +1,357 @@
 -- IITB-RISC-2022
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity MemoryDecoder is
-    port(
-    x: in std_logic_vector(4 downto 0);
-    mem_di_mux: out std_logic;
-    mem_addr_mux: out std_logic_vector(1 downto 0);
-    WR_Enable, RW_Enable: out std_logic
-    );
-end entity;
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity RFDecoder is
-    port(
-    x: in std_logic_vector(5 downto 0);
-    rf_a1_mux, rf_a3_mux, rf_d3_mux: out std_logic_vector(1 downto 0);
-	 reg_wr_en: out std_logic
-    );
-end entity;
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity AluyDecoder is
-    port(
-    x: in std_logic_vector(8 downto 0);
-    
-    alu_y_a_mux: out std_logic_vector(1 downto 0);
-    alu_y_b_mux: out std_logic_vector(2 downto 0);
-    ALU_OP: out std_logic_vector(1 downto 0);
-    C_EN, Z_EN, TZ_EN: out std_logic
-	 );
-end entity;
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity AluxDecoder is
-    port(
-    x: in std_logic;
-    alu_x_a_mux: out std_logic
+ENTITY MemoryDecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+		mem_di_mux : OUT STD_LOGIC;
+		mem_addr_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		WR_Enable, RW_Enable : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity PCDecoder is
-    port(
-    x: in std_logic_vector(2 downto 0);
-    PC_mux: out std_logic_vector(2 downto 0);
-    PC_EN: out std_logic
+ENTITY RFDecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
+		rf_a1_mux, rf_a3_mux, rf_d3_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		reg_wr_en : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity TADecoder is
-    port(
-    x: in std_logic_vector(2 downto 0);
-    TA_mux: out std_logic_vector(1 downto 0);
-    TA_EN: out std_logic
+ENTITY AluyDecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
+
+		alu_y_a_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		alu_y_b_mux : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		ALU_OP : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		C_EN, Z_EN, TZ_EN : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity TBDecoder is
-    port(
-    x: in std_logic_vector(1 downto 0);
-	en: in std_logic;
-    TB_mux: out std_logic_vector(1 downto 0);
-    TB_EN: out std_logic
+ENTITY AluxDecoder IS
+	PORT (
+		x : IN STD_LOGIC;
+		alu_x_a_mux : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity TCDecoder is
-    port(
-    x: in std_logic_vector(1 downto 0);
-    TC_mux: out std_logic;
-    TC_EN: out std_logic
+ENTITY PCDecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+		PC_mux : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		PC_EN : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity TDDecoder is
-    port(
-    x: in std_logic;
-    TD_EN: out std_logic
+ENTITY TADecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+		TA_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		TA_EN : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity IRDecoder is
-    port(
-    x: in std_logic;
-    IR_EN: out std_logic
+ENTITY TBDecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+		en : IN STD_LOGIC;
+		TB_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		TB_EN : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
-architecture behav of IRDecoder is
-begin
-    process(x)
-    begin
-        IR_EN <= x;
-    end process;
-end architecture;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-architecture behav of TDDecoder is
-begin
-    process(x)
-    begin
-        TD_EN <= x;
-    end process;
-end architecture;
-
-architecture behav of TCDecoder is
-begin
-    process(x)
-    begin
-        TC_mux <= not x(0);
-        TC_EN <= x(0) or x(1);
-    end process;
-end architecture;
-
-architecture behav of TBDecoder is
-begin
-    process(x, en)
-    begin
-        TB_mux <= x;
-        TB_EN <= en;
-    end process;
-end architecture;
-
-architecture behav of TADecoder is
-begin
-    process(x)
-    begin
-        case(x) is 
-			when "000" =>
-				TA_mux <= "00";
-                TA_EN <= '0';
-			when "001" =>
-                TA_mux <= "00";
-                TA_EN <= '1';
-			when "010" =>
-                TA_mux <= "01";
-                TA_EN <= '1';
-            when "011" =>
-                TA_mux <= "10";
-                TA_EN <= '1';
-            when "100" =>
-                TA_mux <= "11";
-                TA_EN <= '1';
-			when others =>
-                TA_mux <= "00";
-                TA_EN <= '0';
-		end case;	
-    end process;
-end architecture;
-
-architecture behav of PCDecoder is
-begin
-    process(x)
-    begin
-        PC_mux <= x(2 downto 0);
-        PC_EN <= (x(0) or x(1) ) or x(2);
-    end process;
-end architecture;
-
-architecture behav of AluxDecoder is
-begin
-    alu_x_a_mux <= x;
-end architecture;
-
-architecture behav of AluyDecoder is
-    begin
-        process(x)
-        begin
-            alu_y_a_mux <= x(8 downto 7);
-            alu_y_b_mux <= x(6 downto 4);
-            ALU_OP <= x(3 downto 2);
-            C_EN <= ( (not x(1) )and x(0) );
-            Z_EN <= x(0);
-            TZ_EN <= x(1) and (not x(0));
-        end process;
-end architecture;
-
-architecture behav of RFDecoder is
-    begin
-        process(x)
-        begin
-            rf_a1_mux <= x(5 downto 4);
-            rf_a3_mux <= x(3 downto 2);
-            rf_d3_mux <= x(1 downto 0);
-            reg_wr_en <= x(1) or x(0);
-        end process;
-end architecture;
-
-architecture behav of MemoryDecoder is
-begin
-    process(x)
-    begin
-        mem_di_mux <= x(4);
-        mem_addr_mux <= x(3 downto 2);
-        WR_Enable <= (x(1) and (not x(0)));
-		RW_Enable <= (not x(1)) and x(0);
-    end process;
-end architecture;
-
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity Decoder is
-    port(
-		cw: in std_logic_vector(33 downto 0);
-		mem_di_mux: out std_logic;
-		mem_addr_mux: out std_logic_vector(1 downto 0);
-		WR_Enable, RW_Enable: out std_logic;
-		rf_a1_mux, rf_a3_mux, rf_d3_mux: out std_logic_vector(1 downto 0);
-		reg_wr_en: out std_logic;
-		alu_y_a_mux: out std_logic_vector(1 downto 0);
-		alu_y_b_mux: out std_logic_vector(2 downto 0);
-		ALU_OP: out std_logic_vector(1 downto 0);
-		C_EN, Z_EN, TZ_EN: out std_logic;
-		alu_x_a_mux: out std_logic;
-		PC_mux: out std_logic_vector(2 downto 0);
-		PC_EN: out std_logic;
-		TA_mux: out std_logic_vector(1 downto 0);
-		TA_EN: out std_logic;
-		TB_mux: out std_logic_vector(1 downto 0);
-		TB_EN: out std_logic;
-		TC_mux: out std_logic;
-		TC_EN: out std_logic;
-		TD_EN: out std_logic;
-		IR_EN: out std_logic
+ENTITY TCDecoder IS
+	PORT (
+		x : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+		TC_mux : OUT STD_LOGIC;
+		TC_EN : OUT STD_LOGIC
 	);
-end entity;
+END ENTITY;
 
-architecture behav of Decoder is
-	component MemoryDecoder is
-		 port(
-			x: in std_logic_vector(4 downto 0);
-			mem_di_mux: out std_logic;
-			mem_addr_mux: out std_logic_vector(1 downto 0);
-			WR_Enable: out std_logic;
-			RW_Enable: out std_logic
-		);
-	end component;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-	component RFDecoder is
-		 port(
-		 x: in std_logic_vector(5 downto 0);
-		 rf_a1_mux, rf_a3_mux, rf_d3_mux: out std_logic_vector(1 downto 0);
-		 reg_wr_en: out std_logic
-		 );
-	end component;
-	
-	component AluyDecoder is
-		 port(
-		 x: in std_logic_vector(8 downto 0);
-		 
-		 alu_y_a_mux: out std_logic_vector(1 downto 0);
-		 alu_y_b_mux: out std_logic_vector(2 downto 0);
-		 ALU_OP: out std_logic_vector(1 downto 0);
-		 C_EN, Z_EN, TZ_EN: out std_logic
-		 );
-	end component;
-	
-	component AluxDecoder is
-		 port(
-		 x: in std_logic;
-		 alu_x_a_mux: out std_logic
-		);
-	end component;
+ENTITY TDDecoder IS
+	PORT (
+		x : IN STD_LOGIC;
+		TD_EN : OUT STD_LOGIC
+	);
+END ENTITY;
 
-	component PCDecoder is
-		 port(
-		 x: in std_logic_vector(2 downto 0);
-		 PC_mux: out std_logic_vector(2 downto 0);
-		 PC_EN: out std_logic
-		);
-	end component;
-	
-	component TADecoder is
-		 port(
-		 x: in std_logic_vector(2 downto 0);
-		 TA_mux: out std_logic_vector(1 downto 0);
-		 TA_EN: out std_logic
-		);
-	end component;
-	
-	component TBDecoder is
-		 port(
-		 x: in std_logic_vector(1 downto 0);
-		 en: in std_logic;
-		 TB_mux: out std_logic_vector(1 downto 0);
-		 TB_EN: out std_logic
-		);
-	end component;
-	
-	component TCDecoder is
-		 port(
-		 x: in std_logic_vector(1 downto 0);
-		 TC_mux: out std_logic;
-		 TC_EN: out std_logic
-		);
-	end component;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-	component TDDecoder is
-		 port(
-		 x: in std_logic;
-		 TD_EN: out std_logic
-		);
-	end component;
+ENTITY IRDecoder IS
+	PORT (
+		x : IN STD_LOGIC;
+		IR_EN : OUT STD_LOGIC
+	);
+END ENTITY;
 
-	component IRDecoder is
-		 port(
-		 x: in std_logic;
-		 IR_EN: out std_logic
-		);
-	end component;
-begin
-    MD: MemoryDecoder port map(x => cw(32 downto 28), mem_di_mux => mem_di_mux, mem_addr_mux => mem_addr_mux, WR_Enable => WR_Enable, RW_Enable => RW_Enable );
-	 RF: RFDecoder port map(x => cw(27 downto 22), rf_a1_mux => rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux => rf_d3_mux, reg_wr_en => reg_wr_en);
-	 AYD: AluyDecoder port map(x => cw(21 downto 13), alu_y_a_mux => alu_y_a_mux, alu_y_b_mux => alu_y_b_mux, ALU_OP => ALU_OP, C_EN => C_EN, Z_EN => Z_EN, TZ_EN => TZ_EN);
-	 AXD: AluxDecoder port map(x => cw(12), alu_x_a_mux => alu_x_a_mux);
-	 PCD: PCDecoder port map(x => cw(11 downto 9), PC_EN => PC_EN, PC_mux => PC_mux);
-	 TAD: TADecoder port map(x => cw(8 downto 6),TA_mux => TA_mux, TA_EN => TA_EN);
-	 TBD: TBDecoder port map(x => cw(5 downto 4), en => cw(33), TB_mux => TB_mux, TB_EN => TB_EN);
-	 TCD: TCDecoder port map(x => cw(3 downto 2),TC_mux => TC_mux, TC_EN => TC_EN);
-	 TDD: TDDecoder port map(x => cw(1), TD_EN => TD_EN);
-	 IRD: IRDecoder port map(x => cw(0), IR_EN => IR_EN);
+ARCHITECTURE behav OF IRDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		IR_EN <= x;
+	END PROCESS;
+END ARCHITECTURE;
 
-end architecture;
+ARCHITECTURE behav OF TDDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		TD_EN <= x;
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF TCDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		TC_mux <= NOT x(0);
+		TC_EN <= x(0) OR x(1);
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF TBDecoder IS
+BEGIN
+	PROCESS (x, en)
+	BEGIN
+		TB_mux <= x;
+		TB_EN <= en;
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF TADecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		CASE(x) IS
+			WHEN "000" =>
+			TA_mux <= "00";
+			TA_EN <= '0';
+			WHEN "001" =>
+			TA_mux <= "00";
+			TA_EN <= '1';
+			WHEN "010" =>
+			TA_mux <= "01";
+			TA_EN <= '1';
+			WHEN "011" =>
+			TA_mux <= "10";
+			TA_EN <= '1';
+			WHEN "100" =>
+			TA_mux <= "11";
+			TA_EN <= '1';
+			WHEN OTHERS =>
+			TA_mux <= "00";
+			TA_EN <= '0';
+		END CASE;
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF PCDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		PC_mux <= x(2 DOWNTO 0);
+		PC_EN <= (x(0) OR x(1)) OR x(2);
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF AluxDecoder IS
+BEGIN
+	alu_x_a_mux <= x;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF AluyDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		alu_y_a_mux <= x(8 DOWNTO 7);
+		alu_y_b_mux <= x(6 DOWNTO 4);
+		ALU_OP <= x(3 DOWNTO 2);
+		C_EN <= ((NOT x(1))AND x(0));
+		Z_EN <= x(0);
+		TZ_EN <= x(1) AND (NOT x(0));
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF RFDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		rf_a1_mux <= x(5 DOWNTO 4);
+		rf_a3_mux <= x(3 DOWNTO 2);
+		rf_d3_mux <= x(1 DOWNTO 0);
+		reg_wr_en <= x(1) OR x(0);
+	END PROCESS;
+END ARCHITECTURE;
+
+ARCHITECTURE behav OF MemoryDecoder IS
+BEGIN
+	PROCESS (x)
+	BEGIN
+		mem_di_mux <= x(4);
+		mem_addr_mux <= x(3 DOWNTO 2);
+		WR_Enable <= (x(1) AND (NOT x(0)));
+		RW_Enable <= (NOT x(1)) AND x(0);
+	END PROCESS;
+END ARCHITECTURE;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
+ENTITY Decoder IS
+	PORT (
+		cw : IN STD_LOGIC_VECTOR(33 DOWNTO 0);
+		mem_di_mux : OUT STD_LOGIC;
+		mem_addr_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		WR_Enable, RW_Enable : OUT STD_LOGIC;
+		rf_a1_mux, rf_a3_mux, rf_d3_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		reg_wr_en : OUT STD_LOGIC;
+		alu_y_a_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		alu_y_b_mux : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		ALU_OP : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		C_EN, Z_EN, TZ_EN : OUT STD_LOGIC;
+		alu_x_a_mux : OUT STD_LOGIC;
+		PC_mux : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		PC_EN : OUT STD_LOGIC;
+		TA_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		TA_EN : OUT STD_LOGIC;
+		TB_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		TB_EN : OUT STD_LOGIC;
+		TC_mux : OUT STD_LOGIC;
+		TC_EN : OUT STD_LOGIC;
+		TD_EN : OUT STD_LOGIC;
+		IR_EN : OUT STD_LOGIC
+	);
+END ENTITY;
+
+ARCHITECTURE behav OF Decoder IS
+	COMPONENT MemoryDecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+			mem_di_mux : OUT STD_LOGIC;
+			mem_addr_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			WR_Enable : OUT STD_LOGIC;
+			RW_Enable : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT RFDecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
+			rf_a1_mux, rf_a3_mux, rf_d3_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			reg_wr_en : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT AluyDecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
+
+			alu_y_a_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			alu_y_b_mux : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+			ALU_OP : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			C_EN, Z_EN, TZ_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT AluxDecoder IS
+		PORT (
+			x : IN STD_LOGIC;
+			alu_x_a_mux : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT PCDecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			PC_mux : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+			PC_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT TADecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			TA_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			TA_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT TBDecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+			en : IN STD_LOGIC;
+			TB_mux : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			TB_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT TCDecoder IS
+		PORT (
+			x : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+			TC_mux : OUT STD_LOGIC;
+			TC_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT TDDecoder IS
+		PORT (
+			x : IN STD_LOGIC;
+			TD_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+
+	COMPONENT IRDecoder IS
+		PORT (
+			x : IN STD_LOGIC;
+			IR_EN : OUT STD_LOGIC
+		);
+	END COMPONENT;
+BEGIN
+	MD : MemoryDecoder PORT MAP(x => cw(32 DOWNTO 28), mem_di_mux => mem_di_mux, mem_addr_mux => mem_addr_mux, WR_Enable => WR_Enable, RW_Enable => RW_Enable);
+	RF : RFDecoder PORT MAP(x => cw(27 DOWNTO 22), rf_a1_mux => rf_a1_mux, rf_a3_mux => rf_a3_mux, rf_d3_mux => rf_d3_mux, reg_wr_en => reg_wr_en);
+	AYD : AluyDecoder PORT MAP(x => cw(21 DOWNTO 13), alu_y_a_mux => alu_y_a_mux, alu_y_b_mux => alu_y_b_mux, ALU_OP => ALU_OP, C_EN => C_EN, Z_EN => Z_EN, TZ_EN => TZ_EN);
+	AXD : AluxDecoder PORT MAP(x => cw(12), alu_x_a_mux => alu_x_a_mux);
+	PCD : PCDecoder PORT MAP(x => cw(11 DOWNTO 9), PC_EN => PC_EN, PC_mux => PC_mux);
+	TAD : TADecoder PORT MAP(x => cw(8 DOWNTO 6), TA_mux => TA_mux, TA_EN => TA_EN);
+	TBD : TBDecoder PORT MAP(x => cw(5 DOWNTO 4), en => cw(33), TB_mux => TB_mux, TB_EN => TB_EN);
+	TCD : TCDecoder PORT MAP(x => cw(3 DOWNTO 2), TC_mux => TC_mux, TC_EN => TC_EN);
+	TDD : TDDecoder PORT MAP(x => cw(1), TD_EN => TD_EN);
+	IRD : IRDecoder PORT MAP(x => cw(0), IR_EN => IR_EN);
+
+END ARCHITECTURE;

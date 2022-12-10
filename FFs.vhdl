@@ -2,92 +2,95 @@
 -----------------------------------------Flip Flops--------------------------------------
 -----------------------------------------------------------------------------------------
 -----------------------------------------3 BIT FF ---------------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity FF3 is
-	port(D: in std_logic_vector(2 downto 0);
-		  EN: in std_logic;
-		  RST: in std_logic;
-		  CLK: in std_logic;
-		  Q: out std_logic_vector(2 downto 0));
-end entity FF3;
+ENTITY FF3 IS
+	PORT (
+		D : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+		EN : IN STD_LOGIC;
+		RST : IN STD_LOGIC;
+		CLK : IN STD_LOGIC;
+		Q : OUT STD_LOGIC_VECTOR(2 DOWNTO 0));
+END ENTITY FF3;
 
-architecture Behav of FF3 is
+ARCHITECTURE Behav OF FF3 IS
 
-begin
-	process(D,En,CLK)
-	begin
-	if rst = '1' then
-		Q <= (others =>'0');
-	elsif CLK'event and (CLK = '0') then
-		if EN = '1' then
-			Q <= D;
-		end if;
-	end if;
-	end process;
+BEGIN
+	PROCESS (D, En, CLK)
+	BEGIN
+		IF rst = '1' THEN
+			Q <= (OTHERS => '0');
+		ELSIF CLK'event AND (CLK = '0') THEN
+			IF EN = '1' THEN
+				Q <= D;
+			END IF;
+		END IF;
+	END PROCESS;
 
-end architecture;
+END ARCHITECTURE;
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------1 BIT FF ---------------------------------------
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity FF1 is
-	port(D: in std_logic;
-		  EN: in std_logic;
-		  RST: in std_logic;
-		  CLK: in std_logic;
-		  Q: out std_logic);
-end entity FF1;
+ENTITY FF1 IS
+	PORT (
+		D : IN STD_LOGIC;
+		EN : IN STD_LOGIC;
+		RST : IN STD_LOGIC;
+		CLK : IN STD_LOGIC;
+		Q : OUT STD_LOGIC);
+END ENTITY FF1;
 
-architecture Behav of FF1 is
+ARCHITECTURE Behav OF FF1 IS
 
-begin
-	process(D,En,CLK)
-	begin
-		if rst = '1' then
+BEGIN
+	PROCESS (D, En, CLK)
+	BEGIN
+		IF rst = '1' THEN
 			Q <= '0';
-		elsif CLK'event and (CLK = '0') then
-			if EN = '1' then
+		ELSIF CLK'event AND (CLK = '0') THEN
+			IF EN = '1' THEN
 				Q <= D;
-			end if;
-		end if;
-	end process;
+			END IF;
+		END IF;
+	END PROCESS;
 
-end architecture;
+END ARCHITECTURE;
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------16 BIT FF --------------------------------------
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity FF16 is
-	port(D: in std_logic_vector(15 downto 0);
-		  EN: in std_logic;
-		  RST: in std_logic;
-		  CLK: in std_logic;
-		  Q: out std_logic_vector(15 downto 0));
-end entity FF16;
+ENTITY FF16 IS
+	PORT (
+		D : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		EN : IN STD_LOGIC;
+		RST : IN STD_LOGIC;
+		CLK : IN STD_LOGIC;
+		Q : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+END ENTITY FF16;
 
-architecture Behav of FF16 is
+ARCHITECTURE Behav OF FF16 IS
 
-begin
-	process(D,En,CLK)
-	begin
-		if rst = '1' then
-			Q <= (others =>'0');
-		elsif CLK'event and (CLK = '0') then
-			if EN = '1' then
+BEGIN
+	PROCESS (D, En, CLK)
+	BEGIN
+		IF rst = '1' THEN
+			Q <= (OTHERS => '0');
+		ELSIF CLK'event AND (CLK = '0') THEN
+			IF EN = '1' THEN
 				Q <= D;
-			end if;
-		end if;
-	end process;
+			END IF;
+		END IF;
+	END PROCESS;
 
-end architecture;
+END ARCHITECTURE;
