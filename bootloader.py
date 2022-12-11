@@ -45,7 +45,13 @@ END ARCHITECTURE;'''
 if __name__ == '__main__':
 	words = []
 	params = sys.argv
-	if(len(params) <= 2):
+	n1 = 4
+	n2 = 248
+	if(len(params) == 1):
+		n1 = hex(n1)[2:].zfill(4).upper()
+		n2 = hex(n2)[2:].zfill(4).upper()
+
+	elif(len(params) <= 2):
 		print("Enter two valid numbers 0 <= n <= 65535 for location 61, 62")
 		exit()
 

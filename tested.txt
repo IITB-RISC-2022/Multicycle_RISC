@@ -1,5 +1,7 @@
 IITB-RISC-2022
 
+All Instructions Tested Working using Assembler, Bootloader : Confirmed on 11/12/22
+
 ADD:
     add r2, r0, r1
     Debug:
@@ -42,29 +44,63 @@ ADZ(Zero Not Set):
     r2 = 0x0001
     Result: r1 = 0x0001, r2 = 0x0001
 
+ADL:
+    adi r1,r0,7
+    adi r2,r0,6
+    adl r3,r1,r2 
+    jri r0,3
+    Result: r3 = 0x0013
+
+ADI:
+    adi r1, r0, 7
+    Result: r1 = 0x0007
+
+
 NDU(Nand):
-    ndu r2, r0, r1
-    Debug:
-    r0 = 0x8000
-    r1 = 0x8001
-    r2 = 0x0001
-    Result: r2 = 0x7FFF
+    adi r0,r6,32
+    adi r1,r6,27
+    ndu r2,r0,r1
+    jri r0,1
+    Result: r2 = 0xFFFF
+
+NDU and ADC and ADZ work => NDC, NDZ work
 
 LHI:
-    LHI r0, #111100000B
+    lhi r0,12 ;0b000001100
+    jri r1,1
     Debug:
-    r0 = 0x8000
-    Result: r0 = 0xF000
-LM:
-    LM r0, #00000011B
+    r0 = 0x0600 (0b0000011000000000)
+    Result: r0 = 0x0600
+
+LW:
+    lw r0,r1,61 
+    jri r1,1
     Debug:
-    Mem(0x0002) = 0x748C
-    Mem(0x0003) = 0x7900
-    r0 = 0x0002
-    r1 = 0x8001
+    Mem(0d61) = 0x0004 (bootloader)
     Result:
-    R0 = 0x748C
-    R1 = 0x7900
+    R0 = 0x0004
+
+SW:
+    adi r0,r6,63
+    adi r1,r6,17
+    sw r1,r0,0
+    jri r1,1
+    Result:
+    	Mem(0d63) = 0x0011
+
+
+LM:
+    adi r0,r6,61
+    lm r0,7 ;0b0000111
+    jri r5,2
+    Debug:
+    Mem(0d61) = 0x0004 (bootloader)
+    Mem(0d62) = 0x00F8
+    Mem(0d63) = 0xFFFF
+    Result:
+    R0 = 0x0004
+    R1 = 0x00F8
+    R3 = 0xFFFF
 
 SM:
     SM r0, #00000011B

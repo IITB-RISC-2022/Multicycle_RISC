@@ -32,7 +32,9 @@ if __name__ == '__main__':
                     for i in args:
                         if i[0] == "r":
                             regs = bin(int(i[1]))[2:].zfill(3) + regs
-                    binaries += regs
+                    
+                    binaries += regs[3:6] + regs[:3] + regs[6:] # due to encoding being ra rb rc, asm being rc ra rb
+        
                     binaries += "0"
                     if (inst == "add"):
                         binaries += "00"
@@ -57,7 +59,7 @@ if __name__ == '__main__':
                     for i in args:
                         if i[0] == "r":
                             regs = bin(int(i[1]))[2:].zfill(3) + regs
-                    binaries += regs
+                    binaries += regs[3:6] + regs[:3] + regs[6:] # due to encoding being ra rb rc, asm being rc ra rb
                     binaries += "0"
                     if(inst == "ndu"):
                         binaries += "00"
@@ -66,7 +68,7 @@ if __name__ == '__main__':
                     elif (inst == "ndz"):
                         binaries += "01"
                 if(inst == "lhi"):
-                    binaries += "0000"
+                    binaries += "0011"
                     for i in args:
                         if i[0]=="r":
                             binaries += bin(int(i[1]))[2:].zfill(3)
