@@ -1,5 +1,7 @@
 # IITB RISC SOFTWARE BOOTLOADER
 
+import sys
+
 memfile_start = '''-- IITB-RISC-2022
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
@@ -17,7 +19,6 @@ END MEMORY_SYNTH;
 ARCHITECTURE behav OF MEMORY_SYNTH IS
 	TYPE vec_array IS ARRAY(0 TO 63) OF STD_LOGIC_VECTOR(15 DOWNTO 0);
 	SIGNAL RAM : vec_array := (\n'''
-
 
 memfile_end = '''
 BEGIN
@@ -43,6 +44,21 @@ END ARCHITECTURE;'''
 
 if __name__ == '__main__':
 	words = []
+	params = sys.argv
+	if(len(params) <= 2):
+		print("Enter two valid numbers 0 <= n <= 65535 for location 61, 62")
+		exit()
+
+	else:
+		n1 = int(params[1]) 
+		n2 = int(params[2])
+		if(n1 > 65535 or n2 > 65535 or n1 < 0 or n2 < 0):
+			print("Enter two valid numbers 0 <= n <= 65535 for location 61, 62")
+			exit()
+		else:
+			n1 = hex(n1)[2:].zfill(4).upper()
+			n2 = hex(n2)[2:].zfill(4).upper()
+
 	with open('source.bin', 'r') as file:
 		binary = file.read()
 		word = ''
@@ -59,9 +75,9 @@ if __name__ == '__main__':
 		print("Memory insuffient to load the instructions")
 		exit()
 
-	#adding values of 8, 3 to mem locations 61 and 62 to test benchmark.asm
-	words.append('\t61 => x"0003",\n')
-	words.append('\t62 => x"0008",\n')
+	#adding values of inp1, inp2 to mem locations 61 and 62 to test benchmark.asm
+	words.append(f'\t61 => x"{n1}",\n')
+	words.append(f'\t62 => x"{n2}",\n')
 	if(len(words) < 64):
 		words.append("\tOTHERS => (OTHERS => '1'));")
     

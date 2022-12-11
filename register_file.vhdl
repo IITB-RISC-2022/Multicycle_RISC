@@ -40,6 +40,7 @@ ENTITY REG_FILE IS
 		RF_D2 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		PC_D : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		PC_EN : IN STD_LOGIC;
+		PROC_STATE : OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
 		PC_Q : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
 	);
 END REG_FILE;
@@ -70,4 +71,6 @@ BEGIN
 		END IF;
 		pc_q <= reg_file_q(7);
 	END PROCESS;
+
+	PROC_STATE <= reg_file_q(0) & reg_file_q(1) & reg_file_q(2) & reg_file_q(3) & reg_file_q(4) & reg_file_q(5) & reg_file_q(6) & reg_file_q(7);
 END ARCHITECTURE;

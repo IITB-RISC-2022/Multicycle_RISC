@@ -4,7 +4,10 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY IITB_RISC IS
-	PORT (CLK, RST, BOOT: IN STD_LOGIC);
+	PORT (
+		CLK, RST : IN STD_LOGIC;
+		R0, R1, R2, R3, R4, R5, R6, R7 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+	);
 END ENTITY;
 
 ARCHITECTURE arch OF IITB_RISC IS
@@ -64,7 +67,8 @@ ARCHITECTURE arch OF IITB_RISC IS
 			RF_a3 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 			C_flag : OUT STD_LOGIC;
 			TZ_flag : OUT STD_LOGIC;
-			Z_flag : OUT STD_LOGIC
+			Z_flag : OUT STD_LOGIC;
+			PROC_OUT : OUT STD_LOGIC_VECTOR(127 DOWNTO 0)
 		);
 	END COMPONENT DATAPATH;
 
@@ -98,6 +102,8 @@ ARCHITECTURE arch OF IITB_RISC IS
 	SIGNAL alu_y_a_mux_sig : STD_LOGIC_VECTOR(1 DOWNTO 0);
 	SIGNAL alu_y_b_mux_sig : STD_LOGIC_VECTOR(2 DOWNTO 0);
 	SIGNAL PC_mux_sig : STD_LOGIC_VECTOR(2 DOWNTO 0);
+	SIGNAL BOOT : STD_LOGIC := '1';
+	SIGNAL PROC_OUT : STD_LOGIC_VECTOR(127 DOWNTO 0);
 BEGIN
 	fsm1 : FSM PORT MAP(
 		CLK => CLK, RST => RST, IR => IR_sig, RF_a3 => RF_a3_sig, C_flag => C_flag_sig, Z_flag => Z_flag_sig, TZ_flag => TZ_flag_sig, TB => TB_sig,
@@ -126,5 +132,16 @@ BEGIN
 		RF_a3 => rf_a3_sig,
 		C_flag => c_flag_sig,
 		TZ_flag => tz_flag_sig,
-		Z_flag => z_flag_sig);
+		Z_flag => z_flag_sig,
+		PROC_OUT => PROC_OUT
+	);
+
+	R0 <= PROC_OUT(127 DOWNTO 112);
+	R1 <= PROC_OUT(111 DOWNTO 96);
+	R2 <= PROC_OUT(95 DOWNTO 80);
+	R3 <= PROC_OUT(79 DOWNTO 64);
+	R4 <= PROC_OUT(63 DOWNTO 48);
+	R5 <= PROC_OUT(47 DOWNTO 32);
+	R6 <= PROC_OUT(31 DOWNTO 16);
+	R7 <= PROC_OUT(15 DOWNTO 0);
 END ARCHITECTURE;
