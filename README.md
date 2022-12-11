@@ -88,7 +88,7 @@ sw r3,r0,63
 jri r0,11
 ```
 
-This was tested using a testbench clock frequency of 1 GHz. The testing was done in the following way. For M[61] = 0x04 and M[62] = 0xF8
+This was tested using a testbench clock frequency of 1 GHz. The testing was done in the following way. For `M[61] = 0x04` and `M[62] = 0xF8`
 
 ```bash
 python assembler.py benchmark
@@ -98,7 +98,8 @@ python bootloader.py 4 248
 
 Here is the waveform obtained after simulation of the processor, we see that after 1760 ns the correct result of 0x04 * 0xF8 is stored in the memory location 63, which is 0x3E0. The processor works as intended by the program. The processor performs 23 instructions (after taking into account the iterations) for repetitive additions in 1760 ns (176 cycles). The performance in **CPI** **(Cycles Per Instruction)** is given by **7.652**. The performance of the processor in **MIPS (Million Instructions Per Second)** for this benchmark code is 23/1.760 = **13.06 MIPS.**
 
-![waveform.jpg](https://file+.vscode-resource.vscode-cdn.net/c%3A/Users/Lenovo/OneDrive/Desktop/waveform.jpg?nonce%3D1670786213078)
+![waveform](https://user-images.githubusercontent.com/46604893/206925634-02138695-b235-4c67-b971-2cbd52549b26.jpg)
+
 
 ## A guide on how to program the IITB-RISC-22
 
