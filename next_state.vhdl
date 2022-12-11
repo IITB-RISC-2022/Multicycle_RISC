@@ -1,179 +1,180 @@
 -- IITB-RISC-2022
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity next_state is
-	port (curr_state: in std_logic_vector(4 downto 0);
-			IR: in std_logic_vector(15 downto 0);
-			C_flag: in std_logic;
-			Z_flag: in std_logic;
-			TZ_flag: in std_logic;
-			TB: in std_logic_vector(15 downto 0);
-			RF_a3: in std_logic_vector(2 downto 0);
-			NS: out std_logic_vector(4 downto 0)
-			);
-end entity;
+ENTITY next_state IS
+	PORT (
+		curr_state : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+		IR : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		C_flag : IN STD_LOGIC;
+		Z_flag : IN STD_LOGIC;
+		TZ_flag : IN STD_LOGIC;
+		TB : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		RF_a3 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+		NS : OUT STD_LOGIC_VECTOR(4 DOWNTO 0)
+	);
+END ENTITY;
 
-architecture beh of next_state is
+ARCHITECTURE beh OF next_state IS
 
-begin
-	process(curr_state, IR, C_flag, Z_flag, TZ_flag, TB, RF_a3)
-	begin
-	case curr_state is
-		when "00001" =>
-			if(IR(15 downto 12) = "1011") then
-				NS <= "10111";
-			else
-				NS <= "00010";
-			end if;
-		when "00010" =>
-			case IR(15 downto 12) is
-				when "0000" =>
-					NS <= "00111";
-				when "1110" =>
-					NS <= "00101";
-				when "0001" =>
-					case IR(1 downto 0) is
-						when "00"=>
-							NS <= "00011";
-						when "01"=>
-							if (Z_flag = '0') then
-								NS <= "00001";
-							else 
+BEGIN
+	PROCESS (curr_state, IR, C_flag, Z_flag, TZ_flag, TB, RF_a3)
+	BEGIN
+		CASE curr_state IS
+			WHEN "00001" =>
+				IF (IR(15 DOWNTO 12) = "1011") THEN
+					NS <= "10111";
+				ELSE
+					NS <= "00010";
+				END IF;
+			WHEN "00010" =>
+				CASE IR(15 DOWNTO 12) IS
+					WHEN "0000" =>
+						NS <= "00101";
+					WHEN "1110" =>
+						NS <= "00101";
+					WHEN "0001" =>
+						CASE IR(1 DOWNTO 0) IS
+							WHEN "00" =>
 								NS <= "00011";
-							end if;
-						when "10"=>
-							if (C_flag = '0') then
+							WHEN "01" =>
+								IF (Z_flag = '0') THEN
+									NS <= "00001";
+								ELSE
+									NS <= "00011";
+								END IF;
+							WHEN "10" =>
+								IF (C_flag = '0') THEN
+									NS <= "00001";
+								ELSE
+									NS <= "00011";
+								END IF;
+							WHEN OTHERS =>
+								NS <= "00110";
+						END CASE;
+					WHEN "0010" =>
+						CASE(IR(1 DOWNTO 0)) IS
+						WHEN "00" =>
+							NS <= "00011";
+						WHEN "01" =>
+							IF (z_flag = '0') THEN
 								NS <= "00001";
-							else 
+							ELSE
 								NS <= "00011";
-							end if;
-						when others =>
-							NS <= "00110";
-					end case;
-				when "0010" =>
-					case(IR(1 downto 0)) is
-						when "00"=>
-							NS <= "00011";
-						when "01"=>
-							if (z_flag = '0') then
-							NS <= "00001";
-							else 
-							NS <= "00011";
-							end if;
-						when "10"=>
-							if (c_flag = '0') then
-							NS <= "00001";
-							else 
-							NS <= "00011";	
-							end if;
-						when others=>
-							NS <= (others => '0');
-					end case;
-				when "0011" =>
-					NS <= "00111";
-				when "0111" =>
-					NS <= "01000";
-				when "0101" =>
-					NS <= "11011";
-				when "1100" =>
-					NS <= "01100";
-				when "1101" =>
-					NS <= "01100";
-				when "1000" =>
-					NS <= "10010";
-				when "1001" =>
-					NS <= "10100";
-				when "1010" =>
-					NS <= "10100";
-				when others =>
-					NS <= (others=>'0');
-			end case;
-		when "00011" =>
-			if IR(15 downto 12) = "1011" then
-				NS <= "11000";
-			else
+							END IF;
+						WHEN "10" =>
+							IF (c_flag = '0') THEN
+								NS <= "00001";
+							ELSE
+								NS <= "00011";
+							END IF;
+						WHEN OTHERS =>
+							NS <= (OTHERS => '0');
+						END CASE;
+					WHEN "0011" =>
+						NS <= "00111";
+					WHEN "0111" =>
+						NS <= "01000";
+					WHEN "0101" =>
+						NS <= "11011";
+					WHEN "1100" =>
+						NS <= "01100";
+					WHEN "1101" =>
+						NS <= "01100";
+					WHEN "1000" =>
+						NS <= "10010";
+					WHEN "1001" =>
+						NS <= "10100";
+					WHEN "1010" =>
+						NS <= "10100";
+					WHEN OTHERS =>
+						NS <= (OTHERS => '0');
+				END CASE;
+			WHEN "00011" =>
+				IF IR(15 DOWNTO 12) = "1011" THEN
+					NS <= "11000";
+				ELSE
+					NS <= "00100";
+				END IF;
+			WHEN "00100" =>
+				NS <= "00001";
+			WHEN "00101" =>
+				NS <= "11100";
+			WHEN "00110" =>
 				NS <= "00100";
-			end if;
-		when "00100" =>
-			NS <= "00001";
-		when "00101" =>
-			NS <= "00100";
-		when "00110" =>
-			NS <= "00100";
-		when "00111" =>
-			NS <= "00001";
-		when "01000" =>
-			if IR(15 downto 12) = "0111" then
-				NS <= "01001";
-			-- elsif IR(15 downto 12) = "0101" then
-			-- 	NS <= "01011";
-			else
-				NS <= "00000";
-			end if;
-		when "01001" =>
-			NS <= "01010";
-		when "01010" =>
-			NS <= "00001";
-		when "01011" =>
-			NS <= "00001"; --1
-		when "01100" => -- 12
-			if IR(15 downto 12) = "1100" then
-				NS <= "01101"; --13
-			elsif IR(15 downto 12) = "1101" then
-				NS <= "01111"; -- 15
-			end if;
-		when "01101" => -- 13
-			if IR(15 downto 12) = "1100" then
-				NS <= "01110";
-			else
-				NS <= "00000";
-			end if;
-		when "01110" => -- 14
-			if TB = "0000000000000000" then
+			WHEN "00111" =>
 				NS <= "00001";
-			else
-				NS <= "01101";
-			end if;
-		when "01111" => -- 15
-			NS <= "10000";
-		when "10000" => -- 16
-			NS <= "10001";
-		when "10001" => -- 16
-			if TB = "0000000000000000" then
+			WHEN "01000" =>
+				IF IR(15 DOWNTO 12) = "0111" THEN
+					NS <= "01001";
+				ELSE
+					NS <= "00000";
+				END IF;
+			WHEN "01001" =>
+				NS <= "01010";
+			WHEN "01010" =>
 				NS <= "00001";
-			else
-				NS <= "01111";
-			end if;
-		when "10010" =>
-			if TZ_flag = '1' then 
-				NS <= "10011";
-			else
+			WHEN "01011" =>
+				NS <= "00001"; --1
+			WHEN "01100" => -- 12
+				IF IR(15 DOWNTO 12) = "1100" THEN
+					NS <= "01101"; --13
+				ELSIF IR(15 DOWNTO 12) = "1101" THEN
+					NS <= "01111"; -- 15
+				END IF;
+			WHEN "01101" => -- 13
+				IF IR(15 DOWNTO 12) = "1100" THEN
+					NS <= "01110";
+				ELSE
+					NS <= "00000";
+				END IF;
+			WHEN "01110" => -- 14
+				IF TB = "0000000000000000" THEN
+					NS <= "00001";
+				ELSE
+					NS <= "01101";
+				END IF;
+			WHEN "01111" => -- 15
+				NS <= "10000";
+			WHEN "10000" => -- 16
+				NS <= "10001";
+			WHEN "10001" => -- 16
+				IF TB = "0000000000000000" THEN
+					NS <= "00001";
+				ELSE
+					NS <= "01111";
+				END IF;
+			WHEN "10010" =>
+				IF TZ_flag = '1' THEN
+					NS <= "10011";
+				ELSE
+					NS <= "00001";
+				END IF;
+			WHEN "10011" =>
 				NS <= "00001";
-			end if;
-		when "10011" =>
-			NS <= "00001";
-		when "10100" =>
-			if IR(15 downto 12) = "1001" then
-				NS <= "10101";
-			elsif IR(15 downto 12) = "1010" then
-				NS <= "10110";
-			else
-				NS <= "00000";
-			end if;
-		when "10101" =>
-			NS <= "00001";
-		when "10110" =>
-			NS <= "00001";
-		when "10111" =>
-			NS <= "00011";
-		when "11000" =>
-			NS <= "00001";
-		when "11011" =>
-			NS <= "01011";
-		when others =>
-			NS <= "00001";
-	end case;
-	end process;
-end architecture;
+			WHEN "10100" =>
+				IF IR(15 DOWNTO 12) = "1001" THEN
+					NS <= "10101";
+				ELSIF IR(15 DOWNTO 12) = "1010" THEN
+					NS <= "10110";
+				ELSE
+					NS <= "00000";
+				END IF;
+			WHEN "10101" =>
+				NS <= "00001";
+			WHEN "10110" =>
+				NS <= "00001";
+			WHEN "10111" =>
+				NS <= "00011";
+			WHEN "11000" =>
+				NS <= "00001";
+			WHEN "11011" =>
+				NS <= "01011";
+			WHEN "11100" =>
+				NS <= "00001";
+			WHEN OTHERS =>
+				NS <= "00001";
+		END CASE;
+	END PROCESS;
+END ARCHITECTURE;

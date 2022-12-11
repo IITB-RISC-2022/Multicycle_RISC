@@ -1,37 +1,37 @@
 -- IITB-RISC-2022
 -----------------------------------------------------------------------------------------
 -----------------------------------SIGN EXTENDER 6 BIT-----------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity SignExt6 is
-port (
-    inp : in std_logic_vector (5 downto 0);
-    outp : out std_logic_vector (15 downto 0)
+ENTITY SignExt6 IS
+  PORT (
+    inp : IN STD_LOGIC_VECTOR (5 DOWNTO 0);
+    outp : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
   );
-end entity SignExt6;
+END ENTITY SignExt6;
 
-architecture Struc of SignExt6 is
-begin
-  outp(5 downto 0) <= inp;
-  outp(15 downto 6) <= (others =>inp(5));
-end architecture;
+ARCHITECTURE Struc OF SignExt6 IS
+BEGIN
+  outp(5 DOWNTO 0) <= inp;
+  outp(15 DOWNTO 6) <= (OTHERS => '0');
+END ARCHITECTURE;
 -----------------------------------------------------------------------------------------
 -----------------------------------SIGN EXTENDER 9 BIT-----------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity SignExt9 is
-port (
-    inp : in std_logic_vector (8 downto 0);
-    outp : out std_logic_vector (15 downto 0)
+ENTITY SignExt9 IS
+  PORT (
+    inp : IN STD_LOGIC_VECTOR (8 DOWNTO 0);
+    outp : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
   );
-end entity SignExt9;
+END ENTITY SignExt9;
 
-architecture Struc of SignExt9 is
-begin
-  outp(8 downto 0) <= inp;
-  outp(15 downto 9) <= (others =>inp(8));
-end architecture;
+ARCHITECTURE Struc OF SignExt9 IS
+BEGIN
+  outp(8 DOWNTO 0) <= inp;
+  outp(15 DOWNTO 9) <= (OTHERS => '0');
+END ARCHITECTURE;
