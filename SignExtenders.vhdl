@@ -15,7 +15,7 @@ END ENTITY SignExt6;
 ARCHITECTURE Struc OF SignExt6 IS
 BEGIN
   outp(5 DOWNTO 0) <= inp;
-  outp(15 DOWNTO 6) <= (OTHERS => inp(5));
+  outp(15 DOWNTO 6) <= (OTHERS => '0');
 END ARCHITECTURE;
 -----------------------------------------------------------------------------------------
 -----------------------------------SIGN EXTENDER 9 BIT-----------------------------------
@@ -33,5 +33,5 @@ END ENTITY SignExt9;
 ARCHITECTURE Struc OF SignExt9 IS
 BEGIN
   outp(8 DOWNTO 0) <= inp;
-  outp(15 DOWNTO 9) <= (OTHERS => inp(8));
+  outp(15 DOWNTO 9) <= (OTHERS => '0');
 END ARCHITECTURE;

@@ -31,7 +31,7 @@ BEGIN
 			WHEN "00010" =>
 				CASE IR(15 DOWNTO 12) IS
 					WHEN "0000" =>
-						NS <= "00111";
+						NS <= "00101";
 					WHEN "1110" =>
 						NS <= "00101";
 					WHEN "0001" =>
@@ -100,7 +100,7 @@ BEGIN
 			WHEN "00100" =>
 				NS <= "00001";
 			WHEN "00101" =>
-				NS <= "00100";
+				NS <= "11100";
 			WHEN "00110" =>
 				NS <= "00100";
 			WHEN "00111" =>
@@ -108,8 +108,6 @@ BEGIN
 			WHEN "01000" =>
 				IF IR(15 DOWNTO 12) = "0111" THEN
 					NS <= "01001";
-					-- elsif IR(15 downto 12) = "0101" then
-					-- 	NS <= "01011";
 				ELSE
 					NS <= "00000";
 				END IF;
@@ -173,6 +171,8 @@ BEGIN
 				NS <= "00001";
 			WHEN "11011" =>
 				NS <= "01011";
+			WHEN "11100" =>
+				NS <= "00001";
 			WHEN OTHERS =>
 				NS <= "00001";
 		END CASE;

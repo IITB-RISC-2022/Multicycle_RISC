@@ -28,9 +28,11 @@ if __name__ == '__main__':
                 args = args.split(',')
                 if(inst=="add" or inst=="adc" or inst=="adz" or inst=="adl"):
                     binaries+="0001"
+                    regs = ''
                     for i in args:
                         if i[0] == "r":
-                            binaries += bin(int(i[1]))[2:].zfill(3)
+                            regs = bin(int(i[1]))[2:].zfill(3) + regs
+                    binaries += regs
                     binaries += "0"
                     if (inst == "add"):
                         binaries += "00"
@@ -42,16 +44,20 @@ if __name__ == '__main__':
                         binaries += "11"
                 if(inst == "adi"):
                     binaries += "0000"
+                    regs = ''
                     for i in args:
                         if i[0] == "r":
-                            binaries += bin(int(i[1]))[2:].zfill(3)
+                            regs = bin(int(i[1]))[2:].zfill(3) + regs
                         else:
-                            binaries += bin(int(i)).zfill(6)
+                            binaries += regs
+                            binaries += bin(int(i))[2:].zfill(6)
                 if(inst == "ndu" or inst == "ndc" or inst == "ndz"):
                     binaries += "0010"
+                    regs = ''
                     for i in args:
                         if i[0] == "r":
-                            binaries += bin(int(i[1]))[2:].zfill(3)
+                            regs = bin(int(i[1]))[2:].zfill(3) + regs
+                    binaries += regs
                     binaries += "0"
                     if(inst == "ndu"):
                         binaries += "00"
